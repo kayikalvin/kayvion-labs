@@ -938,12 +938,23 @@ function MagneticBtn({ children, dark, onClick }) {
         gap: 8,
         transition: "background 0.2s, color 0.2s, border-color 0.2s",
         whiteSpace: "nowrap",
+        boxShadow: dark
+          ? "none"
+          : "0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06)",
       }}
       onMouseEnter={(e) => {
-        if (!dark) e.currentTarget.style.borderColor = T.ink;
+        if (!dark) {
+          e.currentTarget.style.borderColor = T.ink;
+          e.currentTarget.style.boxShadow =
+            "0 4px 20px rgba(0,0,0,0.13), 0 2px 6px rgba(0,0,0,0.08)";
+        }
       }}
       onMouseLeave={(e) => {
-        if (!dark) e.currentTarget.style.borderColor = T.border;
+        if (!dark) {
+          e.currentTarget.style.borderColor = T.border;
+          e.currentTarget.style.boxShadow =
+            "0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06)";
+        }
       }}
     >
       {children}
