@@ -849,7 +849,7 @@ export default function ProjectsIndex({ onNavigate, onSelectProject }) {
         }
       `}</style>
       <Cursor />
-      <Navbar onNavigate={onNavigate} />
+      {/* <Navbar onNavigate={onNavigate} /> */}
       <Hero />
       <FilterBar active={filter} setActive={setFilter} />
       <ProjectsGrid filter={filter} onSelect={handleSelect} />
