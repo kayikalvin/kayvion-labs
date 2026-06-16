@@ -13,6 +13,10 @@ import {
   useInView,
 } from "framer-motion";
 
+// Import project pages
+import ProjectsIndex, { PROJECTS } from "./components/Projectsindex";
+import ProjectDetail from "./components/Projectdetail";
+
 /* ─── TOKENS ──────────────────────────────────────────────────────────────── */
 const T = {
   bg: "#F7F7F5",
@@ -2711,6 +2715,338 @@ function Footer() {
 /* ─── ROOT ────────────────────────────────────────────────────────────────── */
 export default function KayvionLabs() {
   const isTouch = useIsTouch();
+  const [currentPage, setCurrentPage] = useState("home");
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  // Navigation handlers
+  const handleNavigate = (destination) => {
+    if (destination === "work") {
+      setCurrentPage("projects");
+      setSelectedProject(null);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    } else if (destination === "home") {
+      setCurrentPage("home");
+      setSelectedProject(null);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    } else if (destination === "contact") {
+      // Scroll to contact section if on home page, otherwise go home and scroll
+      if (currentPage !== "home") {
+        setCurrentPage("home");
+        setSelectedProject(null);
+        setTimeout(() => {
+          document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      } else {
+        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // For other sections, scroll to them on home page
+      if (currentPage !== "home") {
+        setCurrentPage("home");
+        setSelectedProject(null);
+        setTimeout(() => {
+          document.getElementById(destination)?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      } else {
+        document.getElementById(destination)?.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
+  const handleSelectProject = (project) => {
+    setSelectedProject(project);
+    setCurrentPage("project-detail");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
+  const handleBackToProjects = () => {
+    setCurrentPage("projects");
+    setSelectedProject(null);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
+  // Update Navbar to pass handler
+  const renderNavbar = () => {
+    const NavbarWithNav = () => {
+      const [open, setOpen] = useState(false);
+      const [solid, setSolid] = useState(false);
+      const { isDesktop } = useBreakpoint();
+
+      useEffect(() => {
+        const h = () => setSolid(window.scrollY > 32);
+        window.addEventListener("scroll", h);
+        return () => window.removeEventListener("scroll", h);
+      }, []);
+
+      useEffect(() => {
+        if (isDesktop) setOpen(false);
+      }, [isDesktop]);
+
+      const go = (id) => {
+        handleNavigate(id);
+        setOpen(false);
+      };
+
+      return (
+        <>
+          <motion.nav
+            initial={{ y: -72 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: "fixed",
+              inset: "0 0 auto 0",
+              zIndex: 500,
+              transition: "background 0.3s, border-color 0.3s",
+              background: solid ? "rgba(247,247,245,0.92)" : "transparent",
+              backdropFilter: solid ? "blur(14px)" : "none",
+              borderBottom: solid
+                ? `1px solid ${T.border}`
+                : "1px solid transparent",
+            }}
+          >
+            <div
+              style={{
+                maxWidth: 1280,
+                margin: "0 auto",
+                padding: "0 clamp(20px,5vw,40px)",
+                height: 64,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              {/* Logo */}
+              <button
+                data-hover
+                onClick={() => go("hero")}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: isDesktop ? "none" : "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                }}
+              >
+                <KMark size={28} />
+                <span
+                  style={{
+                    fontFamily: "'Clash Display', sans-serif",
+                    fontSize: 17,
+                    fontWeight: 600,
+                    color: T.ink,
+                    letterSpacing: "-0.4px",
+                  }}
+                >
+                  Kayvion<span style={{ color: T.accent }}>Labs</span>
+                </span>
+              </button>
+
+              {/* Desktop nav links */}
+              {isDesktop && (
+                <div style={{ display: "flex", alignItems: "center", gap: 40 }}>
+                  {["Services", "About", "Pricing", "Work", "Testimonials", "Contact"].map(
+                    (l) => (
+                      <button
+                        key={l}
+                        data-hover
+                        onClick={() => go(l.toLowerCase())}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "none",
+                          fontFamily: "'Cabinet Grotesk', sans-serif",
+                          fontSize: 14,
+                          fontWeight: l === "Work" ? 700 : 500,
+                          color: l === "Work" ? T.ink : T.muted,
+                          letterSpacing: "0.01em",
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = T.ink)}
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.color = l === "Work" ? T.ink : T.muted)
+                        }
+                      >
+                        {l}
+                      </button>
+                    ),
+                  )}
+                  <motion.button
+                    data-hover
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => go("contact")}
+                    style={{
+                      cursor: "none",
+                      background: T.ink,
+                      color: T.white,
+                      border: "none",
+                      padding: "10px 24px",
+                      borderRadius: 100,
+                      fontFamily: "'Cabinet Grotesk', sans-serif",
+                      fontWeight: 700,
+                      fontSize: 14,
+                      letterSpacing: "0.01em",
+                    }}
+                  >
+                    Let's talk
+                  </motion.button>
+                </div>
+              )}
+
+              {/* Hamburger — mobile/tablet */}
+              {!isDesktop && (
+                <button
+                  onClick={() => setOpen(!open)}
+                  aria-label={open ? "Close menu" : "Open menu"}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    gap: 5,
+                    padding: 8,
+                    zIndex: 600,
+                  }}
+                >
+                  {[0, 1].map((i) => (
+                    <motion.span
+                      key={i}
+                      animate={{
+                        rotate: open ? (i === 0 ? 45 : -45) : 0,
+                        y: open ? (i === 0 ? 6.5 : -6.5) : 0,
+                      }}
+                      transition={{ duration: 0.25 }}
+                      style={{
+                        display: "block",
+                        width: 22,
+                        height: 1.5,
+                        background: open ? T.ink : T.ink,
+                        borderRadius: 1,
+                      }}
+                    />
+                  ))}
+                </button>
+              )}
+            </div>
+          </motion.nav>
+
+          {/* Mobile full-screen menu overlay */}
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                initial={{ opacity: 0, y: -16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  position: "fixed",
+                  inset: 0,
+                  zIndex: 490,
+                  background: T.bg,
+                  paddingTop: 88,
+                  paddingLeft: "clamp(24px,8vw,48px)",
+                  paddingBottom: 40,
+                  overflowY: "auto",
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  {["Services", "About", "Pricing", "Work", "Testimonials", "Contact"].map(
+                    (l, i) => (
+                      <motion.button
+                        key={l}
+                        initial={{ opacity: 0, x: -24 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.06 }}
+                        onClick={() => go(l.toLowerCase())}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          textAlign: "left",
+                          fontFamily: "'Clash Display', sans-serif",
+                          fontSize: "clamp(36px,9vw,64px)",
+                          fontWeight: 600,
+                          color: T.ink,
+                          letterSpacing: "-2px",
+                          lineHeight: 1.2,
+                          padding: "6px 0",
+                        }}
+                      >
+                        {l}
+                      </motion.button>
+                    ),
+                  )}
+                </div>
+                {/* Mobile contact info at bottom */}
+                <div
+                  style={{
+                    marginTop: 40,
+                    borderTop: `1px solid ${T.border}`,
+                    paddingTop: 28,
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "'Cabinet Grotesk', sans-serif",
+                      fontSize: 14,
+                      color: T.muted,
+                    }}
+                  >
+                    hello@kayvionlabs.com
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "'Cabinet Grotesk', sans-serif",
+                      fontSize: 14,
+                      color: T.muted,
+                      marginTop: 4,
+                    }}
+                  >
+                    Nairobi, Kenya · Remote worldwide
+                  </p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
+      );
+    };
+    return <NavbarWithNav />;
+  };
+
+  // Render projects index page
+  const renderProjectsIndex = () => (
+    <ProjectsIndex 
+      onNavigate={handleNavigate} 
+      onSelectProject={handleSelectProject} 
+    />
+  );
+
+// Render project detail page
+  const renderProjectDetail = () => (
+    <ProjectDetail 
+      project={selectedProject} 
+      allProjects={PROJECTS}
+      onNavigate={handleNavigate} 
+      onBack={handleBackToProjects}
+      onSelectProject={handleSelectProject}
+    />
+  );
+
+  // Render main home page content
+  const renderHomePage = () => (
+    <>
+      <Hero />
+      <Services />
+      <About />
+      <Pricing />
+      <Testimonials />
+      <Contact />
+    </>
+  );
 
   return (
     <div style={{ background: T.bg, color: T.ink, overflowX: "hidden" }}>
@@ -2744,16 +3080,13 @@ export default function KayvionLabs() {
         }
       `}</style>
       <Cursor />
-      <Navbar />
+      {renderNavbar()}
       <main>
-        <Hero />
-        <Services />
-        <About />
-        <Pricing />
-        <Testimonials />
-        <Contact />
+        {currentPage === "home" && renderHomePage()}
+        {currentPage === "projects" && renderProjectsIndex()}
+        {currentPage === "project-detail" && renderProjectDetail()}
       </main>
-      <Footer />
+      {currentPage === "home" && <Footer />}
     </div>
   );
 }
