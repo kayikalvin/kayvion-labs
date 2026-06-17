@@ -946,7 +946,7 @@ function Hero() {
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: `linear-gradient(${T.border} 1px, transparent 1px), linear-gradient(90deg, ${T.border} 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(${T.bg} 1px, transparent 1px), linear-gradient(90deg, ${T.border} 1px, transparent 1px)`,
           backgroundSize: "80px 80px",
           opacity: 0.5,
           pointerEvents: "none",
@@ -1004,7 +1004,7 @@ function Hero() {
               <span
                 style={{
                   fontFamily: "'Cabinet Grotesk', sans-serif",
-                  fontSize: 13,
+                  fontSize: 16,
                   color: T.muted,
                 }}
               >
