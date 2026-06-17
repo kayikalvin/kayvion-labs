@@ -26,14 +26,6 @@ const T = {
   border: "#D9D5CE",    // subtle warm border, slightly darker than bgAlt
   accent: "#2255FF",    // brand blue (unchanged)
   white: "#FFFFFF",     // pure white (unchanged)
-
-  // On-dark variants — for text/borders sitting on T.ink backgrounds (e.g. Contact section)
-  onDark: "rgba(255,255,255,0.92)",      // primary text on dark
-  onDarkMuted: "rgba(255,255,255,0.5)",  // secondary text on dark
-  onDarkFaint: "rgba(255,255,255,0.32)", // labels/eyebrows on dark
-  onDarkBorder: "rgba(255,255,255,0.1)", // hairline borders on dark
-  onDarkHover: "rgba(255,255,255,0.14)", // hover borders on dark
-  accentGlow: "rgba(34,85,255,0.13)",    // ambient glow / accent-tinted backgrounds
 };
 
 /* ─── RESPONSIVE HOOK ─────────────────────────────────────────────────────── */
@@ -946,7 +938,7 @@ function Hero() {
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: `linear-gradient(${T.bg} 1px, transparent 1px), linear-gradient(90deg, ${T.border} 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(${T.border} 1px, transparent 1px), linear-gradient(90deg, ${T.border} 1px, transparent 1px)`,
           backgroundSize: "80px 80px",
           opacity: 0.5,
           pointerEvents: "none",
@@ -1004,7 +996,7 @@ function Hero() {
               <span
                 style={{
                   fontFamily: "'Cabinet Grotesk', sans-serif",
-                  fontSize: 16,
+                  fontSize: 13,
                   color: T.muted,
                 }}
               >
@@ -2574,207 +2566,6 @@ function Testimonials() {
 }
 
 /* ─── CONTACT ─────────────────────────────────────────────────────────────── */
-function FloatingInput({ label, value, onChange, type = "text" }) {
-  const [focused, setFocused] = useState(false);
-  const hasValue = value.length > 0;
-  const active = focused || hasValue;
-
-  return (
-    <div style={{ position: "relative" }}>
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        style={{
-          width: "100%",
-          background: "transparent",
-          border: "none",
-          borderBottom: `1.5px solid ${active ? T.ink : T.border}`,
-          padding: "14px 2px 12px",
-          fontFamily: "'Cabinet Grotesk', sans-serif",
-          fontSize: 17,
-          color: T.ink,
-          outline: "none",
-          transition: "border-color 0.3s",
-        }}
-      />
-      <motion.label
-        animate={{
-          y: active ? -28 : 0,
-          scale: active ? 0.76 : 1,
-          color: active ? T.accent : T.muted,
-        }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          position: "absolute",
-          left: 2,
-          top: 14,
-          fontFamily: "'Cabinet Grotesk', sans-serif",
-          fontSize: 17,
-          pointerEvents: "none",
-          transformOrigin: "left",
-          fontWeight: 500,
-        }}
-      >
-        {label}
-      </motion.label>
-    </div>
-  );
-}
-
-function FloatingTextarea({ label, value, onChange }) {
-  const [focused, setFocused] = useState(false);
-  const hasValue = value.length > 0;
-  const active = focused || hasValue;
-
-  return (
-    <div style={{ position: "relative" }}>
-      <textarea
-        rows={4}
-        value={value}
-        onChange={onChange}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        style={{
-          width: "100%",
-          background: "transparent",
-          border: "none",
-          borderBottom: `1.5px solid ${active ? T.ink : T.border}`,
-          padding: "14px 2px 12px",
-          fontFamily: "'Cabinet Grotesk', sans-serif",
-          fontSize: 17,
-          color: T.ink,
-          outline: "none",
-          resize: "vertical",
-          transition: "border-color 0.3s",
-        }}
-      />
-      <motion.label
-        animate={{
-          y: active ? -28 : 0,
-          scale: active ? 0.76 : 1,
-          color: active ? T.accent : T.muted,
-        }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          position: "absolute",
-          left: 2,
-          top: 14,
-          fontFamily: "'Cabinet Grotesk', sans-serif",
-          fontSize: 17,
-          pointerEvents: "none",
-          transformOrigin: "left",
-          fontWeight: 500,
-        }}
-      >
-        {label}
-      </motion.label>
-    </div>
-  );
-}
-
-function ServiceSelect({ value, onChange }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const close = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-    };
-    window.addEventListener("mousedown", close);
-    return () => window.removeEventListener("mousedown", close);
-  }, []);
-
-  return (
-    <div ref={ref} style={{ position: "relative" }}>
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        style={{
-          width: "100%",
-          background: "transparent",
-          border: "none",
-          borderBottom: `1.5px solid ${open || value ? T.ink : T.border}`,
-          padding: "14px 2px 12px",
-          fontFamily: "'Cabinet Grotesk', sans-serif",
-          fontSize: 17,
-          color: value ? T.ink : T.muted,
-          textAlign: "left",
-          cursor: "pointer",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        {value || "Service of interest"}
-        <motion.span
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.25 }}
-          style={{ color: T.accent, fontSize: 13 }}
-        >
-          ▾
-        </motion.span>
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
-            style={{
-              position: "absolute",
-              top: "calc(100% + 6px)",
-              left: 0,
-              right: 0,
-              background: T.white,
-              border: `1px solid ${T.border}`,
-              borderRadius: 10,
-              boxShadow: "0 12px 32px rgba(0,0,0,0.1)",
-              zIndex: 20,
-              overflow: "hidden",
-              maxHeight: 260,
-              overflowY: "auto",
-            }}
-          >
-            {SERVICES.map((s) => (
-              <button
-                key={s.title}
-                type="button"
-                onClick={() => {
-                  onChange(s.title);
-                  setOpen(false);
-                }}
-                style={{
-                  display: "block",
-                  width: "100%",
-                  textAlign: "left",
-                  background: value === s.title ? T.bgAlt : "transparent",
-                  border: "none",
-                  padding: "12px 16px",
-                  fontFamily: "'Cabinet Grotesk', sans-serif",
-                  fontSize: 14,
-                  color: T.ink,
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = T.bgAlt)}
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.background =
-                    value === s.title ? T.bgAlt : "transparent")
-                }
-              >
-                {s.title}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 function Contact() {
   const [form, setForm] = useState({
     name: "",
@@ -2786,46 +2577,29 @@ function Contact() {
   const [ref, inView] = useAnimInView();
   const { isTablet, isMobile } = useBreakpoint();
 
+  const inp = {
+    background: T.white,
+    border: `1px solid ${T.border}`,
+    color: T.ink,
+    padding: "14px 18px",
+    borderRadius: 8,
+    fontFamily: "'Cabinet Grotesk', sans-serif",
+    fontSize: 15,
+    outline: "none",
+    width: "100%",
+    transition: "border-color 0.2s",
+  };
+
   return (
     <section
       id="contact"
-      style={{
-        background: T.ink,
-        padding: "clamp(80px,11vw,160px) 0 0",
-        position: "relative",
-        overflow: "hidden",
-      }}
+      style={{ background: T.bg, padding: "clamp(72px,10vw,120px) 0" }}
     >
-      {/* Ambient grid + glow */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)`,
-          backgroundSize: "64px 64px",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: "-20%",
-          right: "-10%",
-          width: 600,
-          height: 600,
-          background: `radial-gradient(circle, ${T.accentGlow}, transparent 70%)`,
-
-          pointerEvents: "none",
-          filter: "blur(10px)",
-        }}
-      />
-
       <div
         style={{
           maxWidth: 1280,
           margin: "0 auto",
           padding: `0 clamp(20px,5vw,40px)`,
-          position: "relative",
         }}
       >
         <motion.div
@@ -2834,434 +2608,301 @@ function Contact() {
           animate={inView ? "show" : "hidden"}
           variants={stag(0.1)}
         >
-          {/* Eyebrow */}
+          {/* CTA band */}
           <motion.div
             variants={fadeSlide()}
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              marginBottom: 28,
-            }}
-          >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: "#22c55e",
-                display: "inline-block",
-              }}
-            />
-            <span
-              style={{
-                fontFamily: "'Cabinet Grotesk', sans-serif",
-                fontSize: 12,
-                fontWeight: 700,
-                letterSpacing: "0.16em",
-                color: T.onDarkMuted,
-                textTransform: "uppercase",
-              }}
-            >
-              Available for new work — Q3 2026
-            </span>
-          </motion.div>
-
-          {/* Massive editorial headline */}
-          <motion.h2
-            variants={clipReveal}
-            style={{
-              fontFamily: "'Clash Display', sans-serif",
-              fontSize: "clamp(40px,8.5vw,140px)",
-              fontWeight: 700,
-              letterSpacing: isMobile ? "-2px" : "-5px",
-              color: T.white,
-              lineHeight: 0.96,
-              marginBottom: 0,
-            }}
-          >
-            Let's build
-            <br />
-            something{" "}
-            <span style={{ color: T.accent, fontStyle: "italic" }}>worth</span>
-            <br />
-            building.
-          </motion.h2>
-
-          {/* Sub-line + quick stats row */}
-          <motion.div
-            variants={fadeSlide()}
-            style={{
+              background: T.ink,
+              borderRadius: isTablet ? 14 : 20,
+              padding: isTablet ? "48px clamp(24px,6vw,48px)" : "72px 64px",
+              marginBottom: 80,
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "flex-end",
-              flexWrap: "wrap",
-              gap: 28,
-              marginTop: 40,
-              paddingBottom: 64,
-              borderBottom: `1px solid ${T.onDarkBorder}`,
-
-            }}
-          >
-            <p
-              style={{
-                fontFamily: "'Cabinet Grotesk', sans-serif",
-                fontSize: "clamp(15px,1.6vw,19px)",
-                color: "rgba(255,255,255,0.5)",
-                lineHeight: 1.65,
-                maxWidth: 460,
-              }}
-            >
-              Whether you have a brief, a vague idea, or just a deadline —
-              we'll help you get to clarity and execution fast. No sales
-              scripts, no account managers — you speak with engineers.
-            </p>
-            <div style={{ display: "flex", gap: 40 }}>
-              {[
-                { v: "< 24h", l: "Response time" },
-                { v: "1", l: "Discovery call" },
-              ].map((s, i) => (
-                <div key={i}>
-                  <div
-                    style={{
-                      fontFamily: "'Clash Display', sans-serif",
-                      fontSize: 28,
-                      fontWeight: 700,
-                      color: T.white,
-                      letterSpacing: "-1px",
-                    }}
-                  >
-                    {s.v}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "'Cabinet Grotesk', sans-serif",
-                      fontSize: 12,
-                      color: "rgba(255,255,255,0.4)",
-                      marginTop: 4,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {s.l}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Split: form (light card) + direct info (dark, inline) */}
-          <div
-            style={{
-              display: "flex",
+              alignItems: "center",
               flexDirection: isTablet ? "column" : "row",
-              gap: isTablet ? 0 : 0,
-              marginTop: 0,
+              flexWrap: "wrap",
+              gap: 32,
+              position: "relative",
+              overflow: "hidden",
             }}
           >
-            {/* Left — direct contact info, lives on the dark background */}
             <div
               style={{
-                flex: isTablet ? "1 1 auto" : "0 0 34%",
-                padding: isTablet ? "48px 0 40px" : "64px 0 64px",
-                paddingRight: isTablet ? 0 : 48,
-                borderRight: isTablet
-                  ? "none"
-                  : "1px solid rgba(255,255,255,0.1)",
-                borderBottom: isTablet
-                  ? "1px solid rgba(255,255,255,0.1)"
-                  : "none",
+                position: "absolute",
+                inset: 0,
+                backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)`,
+                backgroundSize: "28px 28px",
+                pointerEvents: "none",
               }}
+            />
+            <div style={{ position: "relative" }}>
+              <h2
+                style={{
+                  fontFamily: "'Clash Display', sans-serif",
+                  fontSize: "clamp(24px,4vw,56px)",
+                  fontWeight: 700,
+                  color: T.white,
+                  letterSpacing: isTablet ? "-1px" : "-1.5px",
+                  lineHeight: 1.08,
+                  marginBottom: 14,
+                }}
+              >
+                Let's build something
+                <br />
+                worth building.
+              </h2>
+              <p
+                style={{
+                  fontFamily: "'Cabinet Grotesk', sans-serif",
+                  fontSize: 17,
+                  color: "rgba(255,255,255,0.55)",
+                  maxWidth: 420,
+                  lineHeight: 1.65,
+                }}
+              >
+                Whether you have a brief, a vague idea, or just a deadline —
+                we'll help you get to clarity and execution fast.
+              </p>
+            </div>
+            <button
+              onClick={() =>
+                document
+                  .getElementById("contact-form")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              style={{
+                position: "relative",
+                cursor: "pointer",
+                background: T.white,
+                color: T.ink,
+                border: "none",
+                padding: isTablet ? "14px 28px" : "18px 40px",
+                borderRadius: 100,
+                fontFamily: "'Clash Display', sans-serif",
+                fontWeight: 700,
+                fontSize: isTablet ? 16 : 18,
+                letterSpacing: "-0.3px",
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+              }}
+            >
+              Start a conversation →
+            </button>
+          </motion.div>
+
+          {/* Form row */}
+          <div
+            id="contact-form"
+            style={{
+              display: "flex",
+              gap: isTablet ? 40 : 80,
+              flexDirection: isTablet ? "column" : "row",
+              flexWrap: "wrap",
+            }}
+          >
+            {/* Left info */}
+            <motion.div
+              variants={fadeSlide()}
+              style={{ flex: "1 1 36%", minWidth: 0 }}
             >
               <p
                 style={{
                   fontFamily: "'Cabinet Grotesk', sans-serif",
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: 700,
                   letterSpacing: "0.14em",
-                  color: "rgba(255,255,255,0.32)",
+                  color: T.muted,
                   textTransform: "uppercase",
-                  marginBottom: 28,
+                  marginBottom: 14,
                 }}
               >
-                Direct
+                Contact
               </p>
-
+              <h3
+                style={{
+                  fontFamily: "'Clash Display', sans-serif",
+                  fontSize: "clamp(22px,3vw,42px)",
+                  fontWeight: 700,
+                  letterSpacing: "-1.2px",
+                  color: T.ink,
+                  lineHeight: 1.08,
+                  marginBottom: 22,
+                }}
+              >
+                Talk to the
+                <br />
+                right people.
+              </h3>
+              <p
+                style={{
+                  fontFamily: "'Cabinet Grotesk', sans-serif",
+                  fontSize: 16,
+                  color: T.muted,
+                  lineHeight: 1.72,
+                  marginBottom: 40,
+                }}
+              >
+                No sales scripts. You'll speak directly with engineers who
+                understand what you're trying to build.
+              </p>
               {[
-                { l: "Email", v: "info@kayvionlabs.com", href: "mailto:info@kayvionlabs.com" },
+                { l: "Email", v: "info@kayvionlabs.com" },
                 { l: "Location", v: "Nairobi, Kenya · Remote worldwide" },
               ].map((item, i) => (
-                <div
-                  key={i}
-                  style={{
-                    paddingBottom: 24,
-                    marginBottom: 24,
-                    borderBottom:
-                      i === 0 ? "1px solid rgba(255,255,255,0.08)" : "none",
-                  }}
-                >
+                <div key={i} style={{ marginBottom: 22 }}>
                   <div
                     style={{
                       fontFamily: "'Cabinet Grotesk', sans-serif",
                       fontSize: 11,
                       fontWeight: 700,
                       letterSpacing: "0.12em",
-                      color: "rgba(255,255,255,0.3)",
+                      color: T.muted,
                       textTransform: "uppercase",
-                      marginBottom: 8,
+                      marginBottom: 4,
                     }}
                   >
                     {item.l}
                   </div>
-                  {item.href ? (
-                    <a
-                      href={item.href}
-                      style={{
-                        fontFamily: "'Clash Display', sans-serif",
-                        fontSize: "clamp(18px,2vw,24px)",
-                        color: T.white,
-                        fontWeight: 600,
-                        letterSpacing: "-0.4px",
-                        textDecoration: "none",
-                        display: "inline-block",
-                        borderBottom: "1.5px solid transparent",
-                        transition: "border-color 0.2s, color 0.2s",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = T.accent;
-                        e.currentTarget.style.color = T.accent;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = "transparent";
-                        e.currentTarget.style.color = T.white;
-                      }}
-                    >
-                      {item.v}
-                    </a>
-                  ) : (
-                    <div
-                      style={{
-                        fontFamily: "'Cabinet Grotesk', sans-serif",
-                        fontSize: 16,
-                        color: "rgba(255,255,255,0.55)",
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      {item.v}
-                    </div>
-                  )}
+                  <div
+                    style={{
+                      fontFamily: "'Cabinet Grotesk', sans-serif",
+                      fontSize: 16,
+                      color: T.ink,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {item.v}
+                  </div>
                 </div>
               ))}
+            </motion.div>
 
-              {/* Socials */}
-              <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-                {[
-                  { name: "LinkedIn", url: "https://linkedin.com/company/kayvionlabs" },
-                  { name: "X", url: "https://x.com/kayvionlabs" },
-                  { name: "GitHub", url: "https://github.com/kayvionlabs" },
-                ].map(({ name, url }) => (
-                  <a
-                    key={name}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={name}
-                    style={{
-                      width: 36,
-                      height: 36,
-                      border: "1px solid rgba(255,255,255,0.14)",
-                      borderRadius: 8,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: "rgba(255,255,255,0.45)",
-                      textDecoration: "none",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
-                      e.currentTarget.style.color = "#fff";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)";
-                      e.currentTarget.style.color = "rgba(255,255,255,0.45)";
-                    }}
-                  >
-                    <SocialIcon title={name} />
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Right — the form, on a lifted light panel for contrast */}
-            <div
-              style={{
-                flex: isTablet ? "1 1 auto" : "1 1 66%",
-                paddingLeft: isTablet ? 0 : 56,
-                paddingTop: isTablet ? 40 : 0,
-              }}
+            {/* Right form */}
+            <motion.div
+              variants={fadeSlide()}
+              style={{ flex: "1 1 52%", minWidth: 0 }}
             >
-              <div
-                style={{
-                  background: T.bg,
-                  borderRadius: isTablet ? 18 : 24,
-                  padding: isTablet ? "36px clamp(22px,5vw,40px)" : "56px 64px",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                {sent ? (
+              {sent ? (
+                <motion.div
+                  initial={{ scale: 0.92, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  style={{
+                    border: `1px solid ${T.border}`,
+                    borderRadius: 12,
+                    padding: "64px 40px",
+                    textAlign: "center",
+                    background: T.white,
+                  }}
+                >
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    animate={{ scale: [1, 1.3, 1] }}
+                    transition={{ duration: 0.5 }}
+                    style={{ fontSize: 48, marginBottom: 18 }}
+                  >
+                    ✓
+                  </motion.div>
+                  <div
                     style={{
-                      textAlign: "center",
-                      padding: isTablet ? "40px 0" : "64px 0",
+                      fontFamily: "'Clash Display', sans-serif",
+                      fontSize: 26,
+                      fontWeight: 700,
+                      color: T.ink,
+                      letterSpacing: "-0.8px",
+                      marginBottom: 10,
                     }}
                   >
-                    <motion.div
-                      initial={{ scale: 0.6 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-                      style={{
-                        width: 56,
-                        height: 56,
-                        borderRadius: "50%",
-                        background: T.accent,
-                        color: T.white,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: 24,
-                        margin: "0 auto 24px",
-                      }}
-                    >
-                      ✓
-                    </motion.div>
-                    <div
-                      style={{
-                        fontFamily: "'Clash Display', sans-serif",
-                        fontSize: "clamp(24px,3vw,34px)",
-                        fontWeight: 700,
-                        color: T.ink,
-                        letterSpacing: "-0.8px",
-                        marginBottom: 10,
-                      }}
-                    >
-                      Message received.
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: "'Cabinet Grotesk', sans-serif",
-                        fontSize: 16,
-                        color: T.muted,
-                      }}
-                    >
-                      We'll be in touch within one business day.
-                    </div>
-                  </motion.div>
-                ) : (
-                  <>
-                    <p
-                      style={{
-                        fontFamily: "'Cabinet Grotesk', sans-serif",
-                        fontSize: 11,
-                        fontWeight: 700,
-                        letterSpacing: "0.14em",
-                        color: T.muted,
-                        textTransform: "uppercase",
-                        marginBottom: 8,
-                      }}
-                    >
-                      Start a conversation
-                    </p>
-                    <h3
-                      style={{
-                        fontFamily: "'Clash Display', sans-serif",
-                        fontSize: "clamp(24px,3vw,36px)",
-                        fontWeight: 700,
-                        letterSpacing: "-1px",
-                        color: T.ink,
-                        marginBottom: 40,
-                      }}
-                    >
-                      Tell us about your project.
-                    </h3>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 30,
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-                          gap: 30,
-                        }}
-                      >
-                        <FloatingInput
-                          label="Your name"
-                          value={form.name}
-                          onChange={(e) =>
-                            setForm({ ...form, name: e.target.value })
-                          }
-                        />
-                        <FloatingInput
-                          label="Email address"
-                          type="email"
-                          value={form.email}
-                          onChange={(e) =>
-                            setForm({ ...form, email: e.target.value })
-                          }
-                        />
-                      </div>
-
-                      <ServiceSelect
-                        value={form.service}
-                        onChange={(v) => setForm({ ...form, service: v })}
-                      />
-
-                      <FloatingTextarea
-                        label="Tell us about your project…"
-                        value={form.message}
+                    Message received.
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "'Cabinet Grotesk', sans-serif",
+                      fontSize: 16,
+                      color: T.muted,
+                    }}
+                  >
+                    We'll be in touch within one business day.
+                  </div>
+                </motion.div>
+              ) : (
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: 14 }}
+                >
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+                      gap: 14,
+                    }}
+                  >
+                    {[
+                      { p: "Your name", k: "name" },
+                      { p: "Email address", k: "email" },
+                    ].map((f) => (
+                      <input
+                        key={f.k}
+                        placeholder={f.p}
+                        value={form[f.k]}
                         onChange={(e) =>
-                          setForm({ ...form, message: e.target.value })
+                          setForm({ ...form, [f.k]: e.target.value })
                         }
+                        style={inp}
+                        onFocus={(e) => (e.target.style.borderColor = T.accent)}
+                        onBlur={(e) => (e.target.style.borderColor = T.border)}
                       />
-
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          flexWrap: "wrap",
-                          gap: 20,
-                          marginTop: 12,
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontFamily: "'Cabinet Grotesk', sans-serif",
-                            fontSize: 13,
-                            color: T.muted,
-                          }}
-                        >
-                          We'll respond within one business day.
-                        </span>
-                        <MagneticBtn dark onClick={() => setSent(true)}>
-                          Send message
-                        </MagneticBtn>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
+                    ))}
+                  </div>
+                  <select
+                    value={form.service}
+                    onChange={(e) =>
+                      setForm({ ...form, service: e.target.value })
+                    }
+                    style={{
+                      ...inp,
+                      color: form.service ? T.ink : T.muted,
+                      appearance: "auto",
+                    }}
+                  >
+                    <option value="" disabled>
+                      Service of interest
+                    </option>
+                    {SERVICES.map((s) => (
+                      <option key={s.title} value={s.title}>
+                        {s.title}
+                      </option>
+                    ))}
+                  </select>
+                  <textarea
+                    placeholder="Tell us about your project…"
+                    rows={5}
+                    value={form.message}
+                    onChange={(e) =>
+                      setForm({ ...form, message: e.target.value })
+                    }
+                    style={{ ...inp, resize: "vertical" }}
+                    onFocus={(e) => (e.target.style.borderColor = T.accent)}
+                    onBlur={(e) => (e.target.style.borderColor = T.border)}
+                  />
+                  <button
+                    onClick={() => setSent(true)}
+                    style={{
+                      cursor: "pointer",
+                      background: T.ink,
+                      color: T.white,
+                      border: "none",
+                      padding: "17px",
+                      borderRadius: 8,
+                      fontFamily: "'Clash Display', sans-serif",
+                      fontWeight: 700,
+                      fontSize: 17,
+                      letterSpacing: "-0.3px",
+                    }}
+                  >
+                    Send message →
+                  </button>
+                </div>
+              )}
+            </motion.div>
           </div>
-
-          {/* Bottom padding before footer */}
-          <div style={{ height: "clamp(60px,8vw,100px)" }} />
         </motion.div>
       </div>
     </section>
