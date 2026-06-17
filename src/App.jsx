@@ -3261,47 +3261,47 @@ function Footer() {
           ))}
         </div>
 
-        {/* Company col */}
-        <div style={{ ...col }}>
-          <p
-            style={{
-              fontFamily: "'Cabinet Grotesk', sans-serif",
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.28)",
-              marginBottom: 18,
-            }}
-          >
-            Company
-          </p>
-          {FOOTER_COMPANY.map((l) => (
-            <button
-              key={l}
+          {/* Company col
+          <div style={{ ...col }}>
+            <p
               style={{
-                display: "block",
-                background: "none",
-                border: "none",
-                color: "rgba(255,255,255,0.48)",
                 fontFamily: "'Cabinet Grotesk', sans-serif",
-                fontSize: 14,
-                fontWeight: 500,
-                cursor: "pointer",
-                marginBottom: 12,
-                padding: 0,
-                textAlign: "left",
-                transition: "color 0.18s",
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.28)",
+                marginBottom: 18,
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "rgba(255,255,255,0.48)")
-              }
             >
-              {l}
-            </button>
-          ))}
-        </div>
+              Company
+            </p>
+            {FOOTER_COMPANY.map((l) => (
+              <button
+                key={l}
+                style={{
+                  display: "block",
+                  background: "none",
+                  border: "none",
+                  color: "rgba(255,255,255,0.48)",
+                  fontFamily: "'Cabinet Grotesk', sans-serif",
+                  fontSize: 14,
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  marginBottom: 12,
+                  padding: 0,
+                  textAlign: "left",
+                  transition: "color 0.18s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = "rgba(255,255,255,0.48)")
+                }
+              >
+                {l}
+              </button>
+            ))}
+          </div> */}
 
         {/* Contact col */}
         <div style={{ paddingLeft: isNarrow ? 0 : 28 }}>
