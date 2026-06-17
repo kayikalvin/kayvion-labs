@@ -804,7 +804,7 @@ function Navbar({ onNavigate }) {
                     fontWeight: 500,
                   }}
                 >
-                  hello@kayvionlabs.com
+                  info@kayvionlabs.com
                 </p>
                 <p
                   style={{
@@ -2746,7 +2746,7 @@ function Contact() {
                 understand what you're trying to build.
               </p>
               {[
-                { l: "Email", v: "hello@kayvionlabs.com" },
+                { l: "Email", v: "info@kayvionlabs.com" },
                 { l: "Location", v: "Nairobi, Kenya · Remote worldwide" },
               ].map((item, i) => (
                 <div key={i} style={{ marginBottom: 22 }}>
@@ -3063,7 +3063,7 @@ function Footer() {
 
           {/* Email pill */}
           <a
-            href="mailto:hello@kayvionlabs.com"
+            href="mailto:info@kayvionlabs.com"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -3093,7 +3093,7 @@ function Footer() {
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
               <polyline points="22,6 12,13 2,6" />
             </svg>
-            hello@kayvionlabs.com
+            info@kayvionlabs.com
           </a>
 
           {/* Socials */}
@@ -3729,7 +3729,7 @@ export default function KayvionLabs() {
                       color: T.muted,
                     }}
                   >
-                    hello@kayvionlabs.com
+                    info@kayvionlabs.com
                   </p>
                   <p
                     style={{
@@ -4094,7 +4094,7 @@ export default function KayvionLabs() {
 //             </div>
 //             {/* Mobile contact info at bottom */}
 //             <div style={{ marginTop: 40, borderTop: `1px solid ${T.border}`, paddingTop: 28 }}>
-//               <p style={{ fontFamily: "'Cabinet Grotesk', sans-serif", fontSize: 14, color: T.muted }}>hello@kayvionlabs.com</p>
+//               <p style={{ fontFamily: "'Cabinet Grotesk', sans-serif", fontSize: 14, color: T.muted }}>info@kayvionlabs.com</p>
 //               <p style={{ fontFamily: "'Cabinet Grotesk', sans-serif", fontSize: 14, color: T.muted, marginTop: 4 }}>Nairobi, Kenya · Remote worldwide</p>
 //             </div>
 //           </motion.div>
@@ -4586,7 +4586,7 @@ export default function KayvionLabs() {
 //               <p style={{ fontFamily: "'Cabinet Grotesk', sans-serif", fontSize: 16, color: T.muted, lineHeight: 1.72, marginBottom: 40 }}>
 //                 No sales scripts. You'll speak directly with engineers who understand what you're trying to build.
 //               </p>
-//               {[{ l: "Email", v: "hello@kayvionlabs.com" }, { l: "Location", v: "Nairobi, Kenya · Remote worldwide" }].map((item, i) => (
+//               {[{ l: "Email", v: "info@kayvionlabs.com" }, { l: "Location", v: "Nairobi, Kenya · Remote worldwide" }].map((item, i) => (
 //                 <div key={i} style={{ marginBottom: 22 }}>
 //                   <div style={{ fontFamily: "'Cabinet Grotesk', sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: T.muted, textTransform: "uppercase", marginBottom: 4 }}>{item.l}</div>
 //                   <div style={{ fontFamily: "'Cabinet Grotesk', sans-serif", fontSize: 16, color: T.ink, fontWeight: 500 }}>{item.v}</div>
@@ -4677,10 +4677,10 @@ export default function KayvionLabs() {
 //           </p>
 
 //           {/* Email pill */}
-//           <a href="mailto:hello@kayvionlabs.com"
+//           <a href="mailto:info@kayvionlabs.com"
 //             style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(34,85,255,0.12)", border: "1px solid rgba(34,85,255,0.28)", borderRadius: 100, padding: "8px 14px", fontFamily: "'Cabinet Grotesk', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.65)", fontWeight: 500, textDecoration: "none", marginBottom: 28 }}>
 //             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-//             hello@kayvionlabs.com
+//             info@kayvionlabs.com
 //           </a>
 
 //           {/* Socials */}
