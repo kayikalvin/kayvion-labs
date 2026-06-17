@@ -18,13 +18,13 @@ import {
 
 /* ─── TOKENS ──────────────────────────────────────────────────────────────── */
 const T = {
-  bg: "#F7F7F5",
-  bgAlt: "#F0F0EC",
-  ink: "#0A0A0A",
-  muted: "#8B8B85",
-  border: "#E2E2DC",
-  accent: "#2255FF",
-  white: "#FFFFFF",
+  bg: "#F2F1ED",        // warm off‑white (unchanged)
+  bgAlt: "#EBE9E4",     // soft greige (unchanged)
+  ink: "#1A1A1A",       // softer near‑black, less harsh than #0A0A0A
+  muted: "#8F8C83",     // warmer grey with a hint of olive
+  border: "#D9D5CE",    // subtle warm border, slightly darker than bgAlt
+  accent: "#2255FF",    // brand blue (unchanged)
+  white: "#FFFFFF",     // pure white (unchanged)
 };
 
 /* ─── HOOKS ───────────────────────────────────────────────────────────────── */
