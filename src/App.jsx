@@ -2856,7 +2856,7 @@ function Contact() {
                     borderRadius: 16,
                     padding: isMobile ? "24px" : "32px",
                     boxShadow: "0 4px 24px rgba(0,0,0,0.04)",
-                    height: isMobile ? "auto" : 560,
+                    height: isMobile ? "auto" : 460,
                     overflowY: "auto",
                   }}
                 >
