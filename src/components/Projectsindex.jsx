@@ -395,7 +395,7 @@ function Navbar({ onNavigate }) {
 
         {isDesktop && (
           <div style={{ display: "flex", alignItems: "center", gap: 40 }}>
-            {["Services", "About", "Pricing", "Work", "Contact"].map((l) => (
+            {["Services", "About", "Pricing", "Projects", "Contact"].map((l) => (
               <button
                 key={l}
                 data-hover
@@ -404,12 +404,12 @@ function Navbar({ onNavigate }) {
                   background: "none", border: "none",
                   cursor: isTouch ? "pointer" : "none",
                   fontFamily: "'Cabinet Grotesk', sans-serif",
-                  fontSize: 14, fontWeight: l === "Work" ? 700 : 500,
-                  color: l === "Work" ? T.ink : T.muted,
+                  fontSize: 14, fontWeight: l === "Projects" ? 700 : 500,
+                  color: l === "Projects" ? T.ink : T.muted,
                   letterSpacing: "0.01em",
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = T.ink)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = l === "Work" ? T.ink : T.muted)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = l === "Projects" ? T.ink : T.muted)}
               >
                 {l}
               </button>
@@ -437,7 +437,7 @@ function Navbar({ onNavigate }) {
 }
 
 /* ─── HERO ────────────────────────────────────────────────────────────────── */
-const TITLE_CHARS = "Work.".split("");
+const TITLE_CHARS = "Projects.".split("");
 
 function Hero() {
   const [ready, setReady] = useState(false);

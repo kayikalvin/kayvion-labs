@@ -69,19 +69,19 @@ const SERVICES = [
   },
   {
     id: "03",
-    title: "Web & Mobile Apps",
+    title: "Web Sites & Web Apps",
     body: "High-performance web applications and native mobile experiences. Designed to convert, built to scale without rewrites.",
   },
-  {
-    id: "04",
-    title: "Cloud Architecture",
-    body: "AWS, Azure, GCP — migration, infrastructure-as-code, and managed cloud at every scale. Resilient, observable, cost-efficient.",
-  },
-  {
-    id: "05",
-    title: "Cybersecurity",
-    body: "Threat modelling, penetration testing, compliance, and continuous monitoring. Security that ships with your product, not after.",
-  },
+  // {
+  //   id: "04",
+  //   title: "Cloud Architecture",
+  //   body: "AWS, Azure, GCP — migration, infrastructure-as-code, and managed cloud at every scale. Resilient, observable, cost-efficient.",
+  // },
+  // {
+  //   id: "05",
+  //   title: "Cybersecurity",
+  //   body: "Threat modelling, penetration testing, compliance, and continuous monitoring. Security that ships with your product, not after.",
+  // },
   {
     id: "06",
     title: "Data & Analytics",
@@ -92,11 +92,11 @@ const SERVICES = [
     title: "API & Integration",
     body: "RESTful APIs, microservices, and enterprise integration that eliminates silos, reduces latency, and unlocks velocity.",
   },
-  {
-    id: "08",
-    title: "Business Automation",
-    body: "Workflow design and intelligent automation that multiplies throughput. We find the friction and engineer it out.",
-  },
+  // {
+  //   id: "08",
+  //   title: "Business Automation",
+  //   body: "Workflow design and intelligent automation that multiplies throughput. We find the friction and engineer it out.",
+  // },
   {
     id: "09",
     title: "Technology Consulting",
@@ -354,9 +354,122 @@ function Ticker() {
 }
 
 /* ─── NAVBAR ──────────────────────────────────────────────────────────────── */
-function Navbar() {
+/* ─── NAVBAR ──────────────────────────────────────────────────────────────── */
+/* Drop-in replacement. Uses the same T tokens, KMark, useBreakpoint, useIsTouch
+   already defined in KayvionLabs.jsx. Pass onNavigate the same way Navbar's
+   "go" worked before — internally it calls handleNavigate(id) if provided,
+   otherwise falls back to scrollIntoView for standalone use. */
+
+const NAV_LINKS = ["Services", "About", "Pricing", "Projects", "Testimonials", "Contact"];
+
+function NavTime() {
+  const [time, setTime] = useState("");
+  useEffect(() => {
+    const fmt = () =>
+      new Date().toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Africa/Nairobi",
+      });
+    setTime(fmt());
+    const t = setInterval(() => setTime(fmt()), 1000 * 30);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <span
+      style={{
+        fontFamily: "'Cabinet Grotesk', sans-serif",
+        fontSize: 12,
+        color: "rgba(255,255,255,0.4)",
+        letterSpacing: "0.02em",
+        fontVariantNumeric: "tabular-nums",
+      }}
+    >
+      {time} NBO
+    </span>
+  );
+}
+
+function ScrambleLink({ label, active, onClick, onMouseEnter }) {
+  const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const [display, setDisplay] = useState(label);
+  const frame = useRef(0);
+  const raf = useRef(null);
+
+  const scramble = useCallback(() => {
+    let iterations = 0;
+    const total = label.length;
+    cancelAnimationFrame(raf.current);
+
+    const tick = () => {
+      const next = label
+        .split("")
+        .map((ch, i) => {
+          if (ch === " ") return " ";
+          if (i < iterations) return label[i];
+          return CHARS[Math.floor(Math.random() * CHARS.length)];
+        })
+        .join("");
+      setDisplay(next);
+      iterations += 1 / 2.2;
+      if (iterations < total) {
+        raf.current = requestAnimationFrame(tick);
+      } else {
+        setDisplay(label);
+      }
+    };
+    raf.current = requestAnimationFrame(tick);
+  }, [label]);
+
+  useEffect(() => () => cancelAnimationFrame(raf.current), []);
+
+  return (
+    <motion.button
+      data-hover
+      onClick={onClick}
+      onMouseEnter={() => {
+        scramble();
+        onMouseEnter?.();
+      }}
+      style={{
+        position: "relative",
+        background: "none",
+        border: "none",
+        cursor: "none",
+        padding: "4px 0",
+        fontFamily: "'Cabinet Grotesk', sans-serif",
+        fontSize: 14,
+        fontWeight: 500,
+        color: active ? T.ink : T.muted,
+        letterSpacing: "0.01em",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {display}
+      <motion.span
+        initial={false}
+        whileHover={{ scaleX: 1, opacity: 1 }}
+        animate={{ scaleX: active ? 1 : 0, opacity: active ? 1 : 0 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          position: "absolute",
+          left: 0,
+          bottom: -3,
+          height: 1.5,
+          width: "100%",
+          background: T.accent,
+          transformOrigin: "left",
+          borderRadius: 2,
+        }}
+      />
+    </motion.button>
+  );
+}
+
+function Navbar({ onNavigate }) {
   const [open, setOpen] = useState(false);
   const [solid, setSolid] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState(null);
   const { isDesktop } = useBreakpoint();
 
   useEffect(() => {
@@ -365,14 +478,21 @@ function Navbar() {
     return () => window.removeEventListener("scroll", h);
   }, []);
 
-  // Close menu if resized to desktop
   useEffect(() => {
     if (isDesktop) setOpen(false);
   }, [isDesktop]);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   const go = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setOpen(false);
+    if (onNavigate) onNavigate(id);
+    else document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -385,9 +505,10 @@ function Navbar() {
           position: "fixed",
           inset: "0 0 auto 0",
           zIndex: 500,
-          transition: "background 0.3s, border-color 0.3s",
-          background: solid ? "rgba(247,247,245,0.92)" : "transparent",
-          backdropFilter: solid ? "blur(14px)" : "none",
+          transition: "background 0.4s, border-color 0.4s",
+          background: solid ? "rgba(242,241,237,0.86)" : "transparent",
+          backdropFilter: solid ? "blur(16px) saturate(140%)" : "none",
+          WebkitBackdropFilter: solid ? "blur(16px) saturate(140%)" : "none",
           borderBottom: solid
             ? `1px solid ${T.border}`
             : "1px solid transparent",
@@ -398,7 +519,7 @@ function Navbar() {
             maxWidth: 1280,
             margin: "0 auto",
             padding: "0 clamp(20px,5vw,40px)",
-            height: 64,
+            height: 68,
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -414,10 +535,25 @@ function Navbar() {
               cursor: isDesktop ? "none" : "pointer",
               display: "flex",
               alignItems: "center",
-              gap: 8,
+              gap: 9,
             }}
           >
-            <KMark size={28} />
+            <span style={{ position: "relative", display: "inline-flex" }}>
+              <KMark size={26} />
+              <motion.span
+                animate={{ opacity: [1, 0.25, 1] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                style={{
+                  position: "absolute",
+                  top: -2,
+                  right: -2,
+                  width: 5,
+                  height: 5,
+                  borderRadius: "50%",
+                  background: T.accent,
+                }}
+              />
+            </span>
             <span
               style={{
                 fontFamily: "'Clash Display', sans-serif",
@@ -433,32 +569,31 @@ function Navbar() {
 
           {/* Desktop nav links */}
           {isDesktop && (
-            <div style={{ display: "flex", alignItems: "center", gap: 40 }}>
-              {["Services", "About", "Pricing", "Testimonials", "Contact"].map(
-                (l) => (
-                  <button
+            <div style={{ display: "flex", alignItems: "center", gap: 36 }}>
+              <div
+                onMouseLeave={() => setHoveredLink(null)}
+                style={{ display: "flex", alignItems: "center", gap: 34 }}
+              >
+                {NAV_LINKS.map((l) => (
+                  <ScrambleLink
                     key={l}
-                    data-hover
+                    label={l}
+                    active={hoveredLink === l}
+                    onMouseEnter={() => setHoveredLink(l)}
                     onClick={() => go(l.toLowerCase())}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "none",
-                      fontFamily: "'Cabinet Grotesk', sans-serif",
-                      fontSize: 14,
-                      fontWeight: 500,
-                      color: T.muted,
-                      letterSpacing: "0.01em",
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = T.ink)}
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = T.muted)
-                    }
-                  >
-                    {l}
-                  </button>
-                ),
-              )}
+                  />
+                ))}
+              </div>
+
+              <span
+                style={{
+                  width: 1,
+                  height: 22,
+                  background: T.border,
+                  display: "inline-block",
+                }}
+              />
+
               <motion.button
                 data-hover
                 whileHover={{ scale: 1.04 }}
@@ -466,18 +601,36 @@ function Navbar() {
                 onClick={() => go("contact")}
                 style={{
                   cursor: "none",
+                  position: "relative",
+                  overflow: "hidden",
                   background: T.ink,
                   color: T.white,
                   border: "none",
-                  padding: "10px 24px",
+                  padding: "10px 22px",
                   borderRadius: 100,
                   fontFamily: "'Cabinet Grotesk', sans-serif",
                   fontWeight: 700,
                   fontSize: 14,
                   letterSpacing: "0.01em",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 7,
                 }}
               >
                 Let's talk
+                <motion.span
+                  initial={{ x: 0 }}
+                  animate={{ x: [0, 3, 0] }}
+                  transition={{
+                    duration: 1.6,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    repeatDelay: 1,
+                  }}
+                  style={{ fontSize: 14, color: T.accent }}
+                >
+                  →
+                </motion.span>
               </motion.button>
             </div>
           )}
@@ -487,35 +640,57 @@ function Navbar() {
             <button
               onClick={() => setOpen(!open)}
               aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
               style={{
                 background: "none",
                 border: "none",
                 cursor: "pointer",
                 display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                gap: 5,
+                alignItems: "center",
+                gap: 10,
                 padding: 8,
                 zIndex: 600,
               }}
             >
-              {[0, 1].map((i) => (
-                <motion.span
-                  key={i}
-                  animate={{
-                    rotate: open ? (i === 0 ? 45 : -45) : 0,
-                    y: open ? (i === 0 ? 6.5 : -6.5) : 0,
-                  }}
-                  transition={{ duration: 0.25 }}
-                  style={{
-                    display: "block",
-                    width: 22,
-                    height: 1.5,
-                    background: open ? T.ink : T.ink,
-                    borderRadius: 1,
-                  }}
-                />
-              ))}
+              <span
+                style={{
+                  fontFamily: "'Cabinet Grotesk', sans-serif",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
+                  color: T.muted,
+                  textTransform: "uppercase",
+                }}
+              >
+                {open ? "Close" : "Menu"}
+              </span>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  gap: 5,
+                }}
+              >
+                {[0, 1].map((i) => (
+                  <motion.span
+                    key={i}
+                    animate={{
+                      rotate: open ? (i === 0 ? 45 : -45) : 0,
+                      y: open ? (i === 0 ? 6.5 : -6.5) : 0,
+                      width: open ? 18 : i === 0 ? 18 : 12,
+                    }}
+                    transition={{ duration: 0.25 }}
+                    style={{
+                      display: "block",
+                      height: 1.5,
+                      background: T.ink,
+                      borderRadius: 1,
+                      marginLeft: i === 1 && !open ? "auto" : 0,
+                    }}
+                  />
+                ))}
+              </div>
             </button>
           )}
         </div>
@@ -525,10 +700,10 @@ function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ clipPath: "inset(0 0 100% 0)" }}
+            animate={{ clipPath: "inset(0 0 0% 0)" }}
+            exit={{ clipPath: "inset(0 0 100% 0)" }}
+            transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
             style={{
               position: "fixed",
               inset: 0,
@@ -536,66 +711,134 @@ function Navbar() {
               background: T.bg,
               paddingTop: 88,
               paddingLeft: "clamp(24px,8vw,48px)",
+              paddingRight: "clamp(24px,8vw,48px)",
               paddingBottom: 40,
               overflowY: "auto",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
             }}
           >
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              {["Services", "About", "Pricing", "Testimonials", "Contact"].map(
-                (l, i) => (
-                  <motion.button
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 0,
+                  borderTop: `1px solid ${T.border}`,
+                  marginTop: 12,
+                }}
+              >
+                {NAV_LINKS.map((l, i) => (
+                  <motion.div
                     key={l}
-                    initial={{ opacity: 0, x: -24 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.06 }}
-                    onClick={() => go(l.toLowerCase())}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: 0.12 + i * 0.06,
+                      duration: 0.5,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
                     style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      textAlign: "left",
-                      fontFamily: "'Clash Display', sans-serif",
-                      fontSize: "clamp(36px,9vw,64px)",
-                      fontWeight: 600,
-                      color: T.ink,
-                      letterSpacing: "-2px",
-                      lineHeight: 1.2,
-                      padding: "6px 0",
+                      borderBottom: `1px solid ${T.border}`,
+                      display: "flex",
+                      alignItems: "baseline",
+                      gap: 18,
+                      padding: "16px 0",
                     }}
                   >
-                    {l}
-                  </motion.button>
-                ),
-              )}
+                    <span
+                      style={{
+                        fontFamily: "'Cabinet Grotesk', sans-serif",
+                        fontSize: 12,
+                        fontWeight: 600,
+                        color: T.muted,
+                        letterSpacing: "0.08em",
+                      }}
+                    >
+                      0{i + 1}
+                    </span>
+                    <button
+                      onClick={() => go(l.toLowerCase())}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        fontFamily: "'Clash Display', sans-serif",
+                        fontSize: "clamp(32px,8vw,56px)",
+                        fontWeight: 600,
+                        color: T.ink,
+                        letterSpacing: "-1.5px",
+                        lineHeight: 1.1,
+                        flex: 1,
+                      }}
+                    >
+                      {l}
+                    </button>
+                  </motion.div>
+                ))}
+              </div>
             </div>
-            {/* Mobile contact info at bottom */}
-            <div
+
+            {/* Mobile footer info */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
               style={{
                 marginTop: 40,
-                borderTop: `1px solid ${T.border}`,
-                paddingTop: 28,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                flexWrap: "wrap",
+                gap: 16,
               }}
             >
-              <p
+              <div>
+                <p
+                  style={{
+                    fontFamily: "'Cabinet Grotesk', sans-serif",
+                    fontSize: 14,
+                    color: T.ink,
+                    fontWeight: 500,
+                  }}
+                >
+                  hello@kayvionlabs.com
+                </p>
+                <p
+                  style={{
+                    fontFamily: "'Cabinet Grotesk', sans-serif",
+                    fontSize: 13,
+                    color: T.muted,
+                    marginTop: 4,
+                  }}
+                >
+                  Nairobi, Kenya · Remote worldwide
+                </p>
+              </div>
+              <div
                 style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
                   fontFamily: "'Cabinet Grotesk', sans-serif",
-                  fontSize: 14,
+                  fontSize: 12,
                   color: T.muted,
                 }}
               >
-                hello@kayvionlabs.com
-              </p>
-              <p
-                style={{
-                  fontFamily: "'Cabinet Grotesk', sans-serif",
-                  fontSize: 14,
-                  color: T.muted,
-                  marginTop: 4,
-                }}
-              >
-                Nairobi, Kenya · Remote worldwide
-              </p>
-            </div>
+                <span
+                  style={{
+                    width: 6,
+                    height: 6,
+                    background: "#22c55e",
+                    borderRadius: "50%",
+                    display: "inline-block",
+                  }}
+                />
+                Available for new work
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -1287,14 +1530,34 @@ function Services() {
 }
 
 /* ─── ABOUT ───────────────────────────────────────────────────────────────── */
+const ABOUT_PILLARS = [
+  {
+    t: "Engineering-first",
+    d: "Every decision is made by practitioners, not account managers. You speak directly with the people building your system.",
+  },
+  {
+    t: "Transparent process",
+    d: "Weekly updates, shared repositories, no black-box delivery. You always know where your project stands.",
+  },
+  {
+    t: "Security by design",
+    d: "Compliance and threat modelling are built in from day one, not bolted on after launch.",
+  },
+  {
+    t: "Long-term thinking",
+    d: "We write code we'd be proud to maintain — because we often do. No quick fixes, no technical debt by default.",
+  },
+];
+
 function About() {
   const [ref, inView] = useAnimInView();
   const { isTablet } = useBreakpoint();
+  const [activePillar, setActivePillar] = useState(0);
 
   return (
     <section
       id="about"
-      style={{ background: T.bgAlt, padding: "clamp(72px,10vw,120px) 0" }}
+      style={{ background: T.bgAlt, padding: "clamp(72px,10vw,140px) 0" }}
     >
       <div
         style={{
@@ -1312,43 +1575,71 @@ function About() {
           <div
             style={{
               display: "flex",
-              gap: isTablet ? 40 : 80,
+              gap: isTablet ? 48 : 64,
               flexDirection: isTablet ? "column" : "row",
               alignItems: "flex-start",
             }}
           >
-            {/* Left copy */}
-            <div style={{ flex: "1 1 44%", minWidth: 0 }}>
-              <motion.p
+            {/* Left copy — slightly narrower than the right, breaks the 50/50 grid */}
+            <div
+              style={{
+                flex: isTablet ? "1 1 100%" : "0 0 38%",
+                minWidth: 0,
+                position: isTablet ? "static" : "sticky",
+                top: isTablet ? "auto" : 140,
+              }}
+            >
+              <motion.div
                 variants={fadeSlide()}
                 style={{
-                  fontFamily: "'Cabinet Grotesk', sans-serif",
-                  fontSize: 12,
-                  fontWeight: 700,
-                  letterSpacing: "0.14em",
-                  color: T.muted,
-                  textTransform: "uppercase",
-                  marginBottom: 14,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  marginBottom: 22,
                 }}
               >
-                About
-              </motion.p>
+                <span
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    background: T.accent,
+                    display: "inline-block",
+                  }}
+                />
+                <p
+                  style={{
+                    fontFamily: "'Cabinet Grotesk', sans-serif",
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    color: T.muted,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  About Kayvion Labs
+                </p>
+              </motion.div>
+
               <motion.h2
                 variants={clipReveal}
                 style={{
                   fontFamily: "'Clash Display', sans-serif",
-                  fontSize: "clamp(28px,5vw,64px)",
+                  fontSize: "clamp(32px,5.5vw,58px)",
                   fontWeight: 700,
                   letterSpacing: isTablet ? "-1.5px" : "-2px",
                   color: T.ink,
-                  lineHeight: 1.04,
-                  marginBottom: 32,
+                  lineHeight: 1.05,
+                  marginBottom: 28,
                 }}
               >
-                Built by engineers.
+                Built by
                 <br />
-                Driven by outcomes.
+                engineers.
+                <br />
+                <span style={{ color: T.accent }}>Driven by outcomes.</span>
               </motion.h2>
+
               <motion.p
                 variants={fadeSlide()}
                 style={{
@@ -1357,6 +1648,7 @@ function About() {
                   color: T.muted,
                   lineHeight: 1.78,
                   marginBottom: 18,
+                  maxWidth: 420,
                 }}
               >
                 Kayvion Labs is an ICT services company that partners with
@@ -1370,15 +1662,18 @@ function About() {
                   fontSize: 17,
                   color: T.muted,
                   lineHeight: 1.78,
-                  marginBottom: 44,
+                  marginBottom: 40,
+                  maxWidth: 420,
                 }}
               >
                 Our team spans software engineers, data scientists, cloud
-                architects, and security specialists across 14 countries. What
-                ties every engagement together is craft, reliability, and
-                measurable impact.
+                architects, and security specialists across 14 countries.
               </motion.p>
-              <motion.div variants={fadeSlide()}>
+
+              <motion.div
+                variants={fadeSlide()}
+                style={{ display: "flex", alignItems: "center", gap: 20 }}
+              >
                 <MagneticBtn
                   dark
                   onClick={() =>
@@ -1389,80 +1684,158 @@ function About() {
                 >
                   Work with us
                 </MagneticBtn>
+                <span
+                  style={{
+                    fontFamily: "'Cabinet Grotesk', sans-serif",
+                    fontSize: 13,
+                    color: T.muted,
+                  }}
+                >
+                  14 countries · 8yr in operation
+                </span>
               </motion.div>
             </div>
 
-            {/* Right pillars */}
-            <div style={{ flex: "1 1 44%", minWidth: 0 }}>
-              {[
-                {
-                  t: "Engineering-first",
-                  d: "Every decision is made by practitioners, not account managers. You speak directly with the people building your system.",
-                },
-                {
-                  t: "Transparent process",
-                  d: "Weekly updates, shared repositories, no black-box delivery. You always know where your project stands.",
-                },
-                {
-                  t: "Security by design",
-                  d: "Compliance and threat modelling are built in from day one, not bolted on after launch.",
-                },
-                {
-                  t: "Long-term thinking",
-                  d: "We write code we'd be proud to maintain — because we often do. No quick fixes, no technical debt by default.",
-                },
-              ].map((v, i) => (
-                <motion.div
-                  key={i}
-                  variants={fadeSlide()}
+            {/* Right — interactive pillar list with live index counter */}
+            <motion.div
+              variants={fadeSlide()}
+              style={{ flex: "1 1 auto", minWidth: 0, width: "100%" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "baseline",
+                  justifyContent: "space-between",
+                  borderBottom: `1px solid ${T.border}`,
+                  paddingBottom: 18,
+                  marginBottom: 4,
+                }}
+              >
+                <span
                   style={{
-                    borderBottom: `1px solid ${T.border}`,
-                    padding: "28px 0",
-                    display: "flex",
-                    gap: 24,
-                    alignItems: "flex-start",
+                    fontFamily: "'Cabinet Grotesk', sans-serif",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    color: T.muted,
+                    textTransform: "uppercase",
                   }}
                 >
-                  <span
+                  What sets us apart
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'Clash Display', sans-serif",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: T.accent,
+                    letterSpacing: "0.02em",
+                    fontVariantNumeric: "tabular-nums",
+                  }}
+                >
+                  0{activePillar + 1} / 0{ABOUT_PILLARS.length}
+                </span>
+              </div>
+
+              {ABOUT_PILLARS.map((v, i) => {
+                const active = activePillar === i;
+                return (
+                  <div
+                    key={i}
+                    onMouseEnter={() => setActivePillar(i)}
+                    onClick={() => setActivePillar(i)}
                     style={{
-                      fontFamily: "'Cabinet Grotesk', sans-serif",
-                      fontSize: 11,
-                      color: T.muted,
-                      fontWeight: 600,
-                      letterSpacing: "0.08em",
-                      marginTop: 4,
-                      flexShrink: 0,
+                      borderBottom: `1px solid ${T.border}`,
+                      cursor: "pointer",
+                      display: "flex",
+                      gap: isTablet ? 18 : 28,
+                      alignItems: "flex-start",
+                      padding: active ? "30px 4px" : "26px 4px",
+                      transition: "padding 0.4s cubic-bezier(0.22,1,0.36,1)",
                     }}
                   >
-                    0{i + 1}
-                  </span>
-                  <div>
-                    <div
+                    <motion.span
+                      animate={{
+                        color: active ? T.accent : T.muted,
+                        scale: active ? 1.05 : 1,
+                      }}
+                      transition={{ duration: 0.3 }}
                       style={{
                         fontFamily: "'Clash Display', sans-serif",
-                        fontSize: 18,
-                        fontWeight: 600,
-                        color: T.ink,
-                        letterSpacing: "-0.3px",
-                        marginBottom: 8,
+                        fontSize: isTablet ? 26 : 34,
+                        fontWeight: 700,
+                        letterSpacing: "-1px",
+                        flexShrink: 0,
+                        width: isTablet ? 44 : 56,
+                        fontVariantNumeric: "tabular-nums",
                       }}
                     >
-                      {v.t}
+                      0{i + 1}
+                    </motion.span>
+
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <motion.div
+                        animate={{ color: active ? T.ink : T.muted }}
+                        transition={{ duration: 0.3 }}
+                        style={{
+                          fontFamily: "'Clash Display', sans-serif",
+                          fontSize: isTablet ? 19 : 23,
+                          fontWeight: 600,
+                          letterSpacing: "-0.3px",
+                        }}
+                      >
+                        {v.t}
+                      </motion.div>
+
+                      <AnimatePresence initial={false}>
+                        {active && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{
+                              duration: 0.4,
+                              ease: [0.22, 1, 0.36, 1],
+                            }}
+                            style={{ overflow: "hidden" }}
+                          >
+                            <p
+                              style={{
+                                fontFamily: "'Cabinet Grotesk', sans-serif",
+                                fontSize: 15.5,
+                                color: T.muted,
+                                lineHeight: 1.68,
+                                maxWidth: 460,
+                                marginTop: 10,
+                                paddingRight: 12,
+                              }}
+                            >
+                              {v.d}
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
-                    <div
+
+                    <motion.span
+                      animate={{
+                        opacity: active ? 1 : 0,
+                        x: active ? 0 : -6,
+                      }}
+                      transition={{ duration: 0.3 }}
                       style={{
-                        fontFamily: "'Cabinet Grotesk', sans-serif",
-                        fontSize: 15,
-                        color: T.muted,
-                        lineHeight: 1.65,
+                        color: T.accent,
+                        fontSize: 18,
+                        flexShrink: 0,
+                        marginTop: isTablet ? 3 : 6,
                       }}
                     >
-                      {v.d}
-                    </div>
+                      →
+                    </motion.span>
                   </div>
-                </motion.div>
-              ))}
-            </div>
+                );
+              })}
+            </motion.div>
           </div>
         </motion.div>
       </div>
@@ -2719,7 +3092,7 @@ export default function KayvionLabs() {
 
   // Navigation handlers
   const handleNavigate = (destination) => {
-    if (destination === "work") {
+    if (destination === "projects") {
       setCurrentPage("projects");
       setSelectedProject(null);
       window.scrollTo({ top: 0, behavior: "instant" });
@@ -2832,7 +3205,7 @@ export default function KayvionLabs() {
                 <span
                   style={{
                     fontFamily: "'Clash Display', sans-serif",
-                    fontSize: 17,
+                    fontSize: 24,
                     fontWeight: 600,
                     color: T.ink,
                     letterSpacing: "-0.4px",
@@ -2845,7 +3218,7 @@ export default function KayvionLabs() {
               {/* Desktop nav links */}
               {isDesktop && (
                 <div style={{ display: "flex", alignItems: "center", gap: 40 }}>
-                  {["Services", "About", "Pricing", "Work", "Testimonials", "Contact"].map(
+                  {["Services", "About", "Pricing", "Projects", "Testimonials", "Contact"].map(
                     (l) => (
                       <button
                         key={l}
@@ -2856,14 +3229,14 @@ export default function KayvionLabs() {
                           border: "none",
                           cursor: "none",
                           fontFamily: "'Cabinet Grotesk', sans-serif",
-                          fontSize: 14,
-                          fontWeight: l === "Work" ? 700 : 500,
-                          color: l === "Work" ? T.ink : T.muted,
+                          fontSize: 24,
+                          fontWeight: l === "Projects" ? 700 : 500,
+                          color: l === "Projects" ? T.ink : T.muted,
                           letterSpacing: "0.01em",
                         }}
                         onMouseEnter={(e) => (e.currentTarget.style.color = T.ink)}
                         onMouseLeave={(e) =>
-                          (e.currentTarget.style.color = l === "Work" ? T.ink : T.muted)
+                          (e.currentTarget.style.color = l === "Projects" ? T.ink : T.muted)
                         }
                       >
                         {l}
@@ -2952,7 +3325,7 @@ export default function KayvionLabs() {
                 }}
               >
                 <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                  {["Services", "About", "Pricing", "Work", "Testimonials", "Contact"].map(
+                  {["Services", "About", "Pricing", "Projects", "Testimonials", "Contact"].map(
                     (l, i) => (
                       <motion.button
                         key={l}
