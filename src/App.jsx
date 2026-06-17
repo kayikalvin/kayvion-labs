@@ -19,13 +19,13 @@ import ProjectDetail from "./components/Projectdetail";
 
 /* ─── TOKENS ──────────────────────────────────────────────────────────────── */
 const T = {
-  bg: "#F2F1ED",        // warm off‑white (unchanged)
-  bgAlt: "#EBE9E4",     // soft greige (unchanged)
-  ink: "#1A1A1A",       // softer near‑black, less harsh than #0A0A0A
-  muted: "#8F8C83",     // warmer grey with a hint of olive
-  border: "#D9D5CE",    // subtle warm border, slightly darker than bgAlt
-  accent: "#2255FF",    // brand blue (unchanged)
-  white: "#FFFFFF",     // pure white (unchanged)
+  bg: "#F2F1ED", // warm off‑white (unchanged)
+  bgAlt: "#EBE9E4", // soft greige (unchanged)
+  ink: "#1A1A1A", // softer near‑black, less harsh than #0A0A0A
+  muted: "#8F8C83", // warmer grey with a hint of olive
+  border: "#D9D5CE", // subtle warm border, slightly darker than bgAlt
+  accent: "#2255FF", // brand blue (unchanged)
+  white: "#FFFFFF", // pure white (unchanged)
 };
 
 /* ─── RESPONSIVE HOOK ─────────────────────────────────────────────────────── */
@@ -360,7 +360,14 @@ function Ticker() {
    "go" worked before — internally it calls handleNavigate(id) if provided,
    otherwise falls back to scrollIntoView for standalone use. */
 
-const NAV_LINKS = ["Services", "About", "Pricing", "Projects", "Testimonials", "Contact"];
+const NAV_LINKS = [
+  "Services",
+  "About",
+  "Pricing",
+  "Projects",
+  "Testimonials",
+  "Contact",
+];
 
 function NavTime() {
   const [time, setTime] = useState("");
@@ -542,7 +549,11 @@ function Navbar({ onNavigate }) {
               <KMark size={26} />
               <motion.span
                 animate={{ opacity: [1, 0.25, 1] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 2.4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 style={{
                   position: "absolute",
                   top: -2,
@@ -1214,7 +1225,12 @@ function Hero() {
           animate={{ opacity: 1, y: [0, 6, 0] }}
           transition={{
             opacity: { delay: 1.8, duration: 0.6 },
-            y: { delay: 2.4, duration: 1.8, repeat: Infinity, ease: "easeInOut" },
+            y: {
+              delay: 2.4,
+              duration: 1.8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
           }}
           style={{
             position: "absolute",
@@ -1779,7 +1795,8 @@ function About() {
                   maxWidth: 420,
                 }}
               >
-                Our team spans out with experience in software engineers, data scientists, software designers, and ML and AI specialists .
+                Our team spans out with experience in software engineers, data
+                scientists, software designers, and ML and AI specialists .
               </motion.p>
 
               <motion.div
@@ -2839,6 +2856,8 @@ function Contact() {
                     borderRadius: 16,
                     padding: isMobile ? "24px" : "32px",
                     boxShadow: "0 4px 24px rgba(0,0,0,0.04)",
+                    height: isMobile ? "auto" : 560,
+                    overflowY: "auto",
                   }}
                 >
                   <div
@@ -2913,7 +2932,7 @@ function Contact() {
                     onChange={(e) =>
                       setForm({ ...form, message: e.target.value })
                     }
-                    style={{ ...getInputStyle("message"), resize: "vertical" }}
+                    style={{ ...getInputStyle("message"), height: 180,  resize: "none" }}
                     onFocus={() => setFocusedField("message")}
                     onBlur={() => setFocusedField(null)}
                   />
@@ -3522,10 +3541,14 @@ export default function KayvionLabs() {
         setCurrentPage("home");
         setSelectedProject(null);
         setTimeout(() => {
-          document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+          document
+            .getElementById("contact")
+            ?.scrollIntoView({ behavior: "smooth" });
         }, 100);
       } else {
-        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+        document
+          .getElementById("contact")
+          ?.scrollIntoView({ behavior: "smooth" });
       }
     } else {
       // For other sections, scroll to them on home page
@@ -3533,10 +3556,14 @@ export default function KayvionLabs() {
         setCurrentPage("home");
         setSelectedProject(null);
         setTimeout(() => {
-          document.getElementById(destination)?.scrollIntoView({ behavior: "smooth" });
+          document
+            .getElementById(destination)
+            ?.scrollIntoView({ behavior: "smooth" });
         }, 100);
       } else {
-        document.getElementById(destination)?.scrollIntoView({ behavior: "smooth" });
+        document
+          .getElementById(destination)
+          ?.scrollIntoView({ behavior: "smooth" });
       }
     }
   };
@@ -3634,31 +3661,39 @@ export default function KayvionLabs() {
               {/* Desktop nav links */}
               {isDesktop && (
                 <div style={{ display: "flex", alignItems: "center", gap: 40 }}>
-                  {["Services", "About", "Pricing", "Projects", "Testimonials", "Contact"].map(
-                    (l) => (
-                      <button
-                        key={l}
-                        data-hover
-                        onClick={() => go(l.toLowerCase())}
-                        style={{
-                          background: "none",
-                          border: "none",
-                          cursor: "none",
-                          fontFamily: "'Cabinet Grotesk', sans-serif",
-                          fontSize: 24,
-                          fontWeight: l === "Projects" ? 700 : 500,
-                          color: l === "Projects" ? T.ink : T.muted,
-                          letterSpacing: "0.01em",
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.color = T.ink)}
-                        onMouseLeave={(e) =>
-                          (e.currentTarget.style.color = l === "Projects" ? T.ink : T.muted)
-                        }
-                      >
-                        {l}
-                      </button>
-                    ),
-                  )}
+                  {[
+                    "Services",
+                    "About",
+                    "Pricing",
+                    "Projects",
+                    "Testimonials",
+                    "Contact",
+                  ].map((l) => (
+                    <button
+                      key={l}
+                      data-hover
+                      onClick={() => go(l.toLowerCase())}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "none",
+                        fontFamily: "'Cabinet Grotesk', sans-serif",
+                        fontSize: 24,
+                        fontWeight: l === "Projects" ? 700 : 500,
+                        color: l === "Projects" ? T.ink : T.muted,
+                        letterSpacing: "0.01em",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = T.ink)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color =
+                          l === "Projects" ? T.ink : T.muted)
+                      }
+                    >
+                      {l}
+                    </button>
+                  ))}
                   <motion.button
                     data-hover
                     whileHover={{ scale: 1.04 }}
@@ -3740,33 +3775,40 @@ export default function KayvionLabs() {
                   overflowY: "auto",
                 }}
               >
-                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                  {["Services", "About", "Pricing", "Projects", "Testimonials", "Contact"].map(
-                    (l, i) => (
-                      <motion.button
-                        key={l}
-                        initial={{ opacity: 0, x: -24 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.06 }}
-                        onClick={() => go(l.toLowerCase())}
-                        style={{
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                          textAlign: "left",
-                          fontFamily: "'Clash Display', sans-serif",
-                          fontSize: "clamp(36px,9vw,64px)",
-                          fontWeight: 600,
-                          color: T.ink,
-                          letterSpacing: "-2px",
-                          lineHeight: 1.2,
-                          padding: "6px 0",
-                        }}
-                      >
-                        {l}
-                      </motion.button>
-                    ),
-                  )}
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: 4 }}
+                >
+                  {[
+                    "Services",
+                    "About",
+                    "Pricing",
+                    "Projects",
+                    "Testimonials",
+                    "Contact",
+                  ].map((l, i) => (
+                    <motion.button
+                      key={l}
+                      initial={{ opacity: 0, x: -24 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.06 }}
+                      onClick={() => go(l.toLowerCase())}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        fontFamily: "'Clash Display', sans-serif",
+                        fontSize: "clamp(36px,9vw,64px)",
+                        fontWeight: 600,
+                        color: T.ink,
+                        letterSpacing: "-2px",
+                        lineHeight: 1.2,
+                        padding: "6px 0",
+                      }}
+                    >
+                      {l}
+                    </motion.button>
+                  ))}
                 </div>
                 {/* Mobile contact info at bottom */}
                 <div
@@ -3807,18 +3849,18 @@ export default function KayvionLabs() {
 
   // Render projects index page
   const renderProjectsIndex = () => (
-    <ProjectsIndex 
-      onNavigate={handleNavigate} 
-      onSelectProject={handleSelectProject} 
+    <ProjectsIndex
+      onNavigate={handleNavigate}
+      onSelectProject={handleSelectProject}
     />
   );
 
-// Render project detail page
+  // Render project detail page
   const renderProjectDetail = () => (
-    <ProjectDetail 
-      project={selectedProject} 
+    <ProjectDetail
+      project={selectedProject}
       allProjects={PROJECTS}
-      onNavigate={handleNavigate} 
+      onNavigate={handleNavigate}
       onBack={handleBackToProjects}
       onSelectProject={handleSelectProject}
     />
