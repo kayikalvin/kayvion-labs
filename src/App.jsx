@@ -847,13 +847,69 @@ function Navbar({ onNavigate }) {
 }
 
 /* ─── HERO ────────────────────────────────────────────────────────────────── */
+/* ─── HERO ────────────────────────────────────────────────────────────────── */
 const HERO_CHARS = "Intelligent".split("");
+
+const HERO_SECTORS = [
+  "Healthcare",
+  "FMCG Distribution",
+  "Real Estate",
+  "EdTech",
+  "Non-Profit",
+  "Maritime / Defence",
+];
+
+function SectorTicker() {
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => {
+      setIdx((p) => (p + 1) % HERO_SECTORS.length);
+    }, 2200);
+    return () => clearInterval(t);
+  }, []);
+
+  return (
+    <span
+      style={{
+        position: "relative",
+        display: "inline-block",
+        height: 14,
+        overflow: "hidden",
+        verticalAlign: "middle",
+        minWidth: 182,
+      }}
+    >
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={idx}
+          initial={{ y: 16, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -16, opacity: 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: "absolute",
+            left: 0,
+            top: -6,
+            whiteSpace: "nowrap",
+            fontFamily: "'Cabinet Grotesk', sans-serif",
+            fontSize: 18,
+            fontWeight: 600,
+            color: T.accent,
+          }}
+        >
+          {HERO_SECTORS[idx]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
 
 function Hero() {
   const [ready, setReady] = useState(false);
   const { scrollY } = useScroll();
   const { isMobile, isTablet } = useBreakpoint();
   const y = useTransform(scrollY, [0, 600], [0, isMobile ? 40 : 100]);
+  const heroOpacity = useTransform(scrollY, [0, 400], [1, 0.4]);
 
   useEffect(() => {
     const t = setTimeout(() => setReady(true), 200);
@@ -900,8 +956,8 @@ function Hero() {
           position: "relative",
         }}
       >
-        {/* Eyebrow */}
-        <AnimatePresence>
+        {/* Eyebrow — now points at proof (real sectors) instead of restating the headline */}
+        <AnimatePresence className="align-center justify-center">
           {ready && (
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -919,19 +975,20 @@ function Hero() {
               <span
                 style={{
                   fontFamily: "'Cabinet Grotesk', sans-serif",
-                  fontSize: 13,
+                  fontSize: 18,
                   fontWeight: 600,
                   color: T.muted,
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
                 }}
               >
-                Building Intelligent Systems
+                Currently shipping for
               </span>
+              <SectorTicker />
               <span
                 style={{
                   width: 1,
-                  height: 12,
+                  height: 18,
                   background: T.border,
                   display: "inline-block",
                 }}
@@ -1075,7 +1132,7 @@ function Hero() {
           </motion.div>
         )}
 
-        {/* Stats */}
+        {/* Stats — same numbers, refined visual treatment: accent corner tick instead of plain borders */}
         {ready && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -1083,19 +1140,24 @@ function Hero() {
             transition={{ delay: 1.4, duration: 0.6 }}
             style={{
               marginTop: isMobile ? 56 : 88,
-              paddingTop: 36,
+              paddingTop: 0,
               borderTop: `1px solid ${T.border}`,
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4,1fr)",
-              gap: isMobile ? "24px 0" : 0,
+              gap: isMobile ? "0" : 0,
             }}
           >
             {STATS.map((s, i) => (
-              <div
+              <motion.div
                 key={i}
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.25 }}
                 style={{
+                  position: "relative",
+                  paddingTop: 28,
                   paddingLeft: (isMobile ? i % 2 !== 0 : i !== 0) ? 24 : 0,
                   paddingRight: 24,
+                  paddingBottom: isMobile && i < 2 ? 24 : 0,
                   borderRight: isMobile
                     ? i % 2 === 0
                       ? `1px solid ${T.border}`
@@ -1105,9 +1167,19 @@ function Hero() {
                       : "none",
                   borderBottom:
                     isMobile && i < 2 ? `1px solid ${T.border}` : "none",
-                  paddingBottom: isMobile && i < 2 ? 24 : 0,
                 }}
               >
+                {/* Accent tick mark above each stat, replaces plain top border for the whole row */}
+                <span
+                  style={{
+                    position: "absolute",
+                    top: -1,
+                    left: (isMobile ? i % 2 !== 0 : i !== 0) ? 24 : 0,
+                    width: 20,
+                    height: 2,
+                    background: T.accent,
+                  }}
+                />
                 <div
                   style={{
                     fontFamily: "'Clash Display', sans-serif",
@@ -1129,11 +1201,52 @@ function Hero() {
                 >
                   {s.l}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         )}
       </motion.div>
+
+      {/* Scroll cue — signals there's more below on a full-height hero */}
+      {ready && !isMobile && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, 6, 0] }}
+          transition={{
+            opacity: { delay: 1.8, duration: 0.6 },
+            y: { delay: 2.4, duration: 1.8, repeat: Infinity, ease: "easeInOut" },
+          }}
+          style={{
+            position: "absolute",
+            bottom: 28,
+            right: "clamp(20px,5vw,40px)",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "'Cabinet Grotesk', sans-serif",
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: T.muted,
+            }}
+          >
+            Scroll
+          </span>
+          <span
+            style={{
+              width: 24,
+              height: 1,
+              background: T.border,
+              display: "inline-block",
+            }}
+          />
+        </motion.div>
+      )}
     </section>
   );
 }
