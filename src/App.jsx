@@ -174,10 +174,10 @@ const TICKER_ITEMS = [
 ];
 
 const STATS = [
-  { v: "120+", l: "Projects shipped" },
+  { v: "10+", l: "Projects shipped" },
   { v: "98%", l: "Client retention" },
-  { v: "14", l: "Countries" },
-  { v: "8yr", l: "In operation" },
+  { v: "5+", l: "Counties" },
+  { v: "3yr", l: "In operation" },
 ];
 
 /* ─── ANIMATION HELPERS ───────────────────────────────────────────────────── */
@@ -1666,8 +1666,7 @@ function About() {
                   maxWidth: 420,
                 }}
               >
-                Our team spans software engineers, data scientists, cloud
-                architects, and security specialists across 14 countries.
+                Our team spans out with experience in software engineers, data scientists, software designers, and ML and AI specialists .
               </motion.p>
 
               <motion.div
@@ -1691,7 +1690,7 @@ function About() {
                     color: T.muted,
                   }}
                 >
-                  14 countries · 8yr in operation
+                  5+ counties · 3yr in operation
                 </span>
               </motion.div>
             </div>
