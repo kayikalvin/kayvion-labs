@@ -3047,10 +3047,10 @@ function SocialIcon({ title }) {
 const FOOTER_SERVICES = [
   "Software Engineering",
   "AI & Machine Learning",
-  "Cloud Architecture",
-  "Cybersecurity",
   "Data & Analytics",
-  "Business Automation",
+  "API & Integrations",
+  "Technology Consulting"
+
 ];
 const FOOTER_COMPANY = [
   "About",
