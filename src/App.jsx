@@ -2576,19 +2576,24 @@ function Contact() {
   const [sent, setSent] = useState(false);
   const [ref, inView] = useAnimInView();
   const { isTablet, isMobile } = useBreakpoint();
+  const [focusedField, setFocusedField] = useState(null);
 
-  const inp = {
+  const getInputStyle = (fieldKey) => ({
     background: T.white,
-    border: `1px solid ${T.border}`,
+    border: `1.5px solid ${focusedField === fieldKey ? T.accent : T.border}`,
     color: T.ink,
-    padding: "14px 18px",
-    borderRadius: 8,
+    padding: "15px 18px",
+    borderRadius: 10,
     fontFamily: "'Cabinet Grotesk', sans-serif",
     fontSize: 15,
     outline: "none",
     width: "100%",
-    transition: "border-color 0.2s",
-  };
+    transition: "border-color 0.2s, box-shadow 0.2s",
+    boxShadow:
+      focusedField === fieldKey
+        ? `0 0 0 4px ${T.accent}1A`
+        : "0 1px 2px rgba(0,0,0,0.03)",
+  });
 
   return (
     <section
@@ -2825,7 +2830,16 @@ function Contact() {
                 </motion.div>
               ) : (
                 <div
-                  style={{ display: "flex", flexDirection: "column", gap: 14 }}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 16,
+                    background: T.white,
+                    border: `1px solid ${T.border}`,
+                    borderRadius: 16,
+                    padding: isMobile ? "24px" : "32px",
+                    boxShadow: "0 4px 24px rgba(0,0,0,0.04)",
+                  }}
                 >
                   <div
                     style={{
@@ -2845,32 +2859,53 @@ function Contact() {
                         onChange={(e) =>
                           setForm({ ...form, [f.k]: e.target.value })
                         }
-                        style={inp}
-                        onFocus={(e) => (e.target.style.borderColor = T.accent)}
-                        onBlur={(e) => (e.target.style.borderColor = T.border)}
+                        style={getInputStyle(f.k)}
+                        onFocus={() => setFocusedField(f.k)}
+                        onBlur={() => setFocusedField(null)}
                       />
                     ))}
                   </div>
-                  <select
-                    value={form.service}
-                    onChange={(e) =>
-                      setForm({ ...form, service: e.target.value })
-                    }
-                    style={{
-                      ...inp,
-                      color: form.service ? T.ink : T.muted,
-                      appearance: "auto",
-                    }}
-                  >
-                    <option value="" disabled>
-                      Service of interest
-                    </option>
-                    {SERVICES.map((s) => (
-                      <option key={s.title} value={s.title}>
-                        {s.title}
+
+                  <div style={{ position: "relative" }}>
+                    <select
+                      value={form.service}
+                      onChange={(e) =>
+                        setForm({ ...form, service: e.target.value })
+                      }
+                      onFocus={() => setFocusedField("service")}
+                      onBlur={() => setFocusedField(null)}
+                      style={{
+                        ...getInputStyle("service"),
+                        color: form.service ? T.ink : T.muted,
+                        appearance: "none",
+                        cursor: "pointer",
+                        paddingRight: 40,
+                      }}
+                    >
+                      <option value="" disabled>
+                        Service of interest
                       </option>
-                    ))}
-                  </select>
+                      {SERVICES.map((s) => (
+                        <option key={s.title} value={s.title}>
+                          {s.title}
+                        </option>
+                      ))}
+                    </select>
+                    <span
+                      style={{
+                        position: "absolute",
+                        right: 18,
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        color: T.accent,
+                        fontSize: 12,
+                        pointerEvents: "none",
+                      }}
+                    >
+                      ▾
+                    </span>
+                  </div>
+
                   <textarea
                     placeholder="Tell us about your project…"
                     rows={5}
@@ -2878,11 +2913,14 @@ function Contact() {
                     onChange={(e) =>
                       setForm({ ...form, message: e.target.value })
                     }
-                    style={{ ...inp, resize: "vertical" }}
-                    onFocus={(e) => (e.target.style.borderColor = T.accent)}
-                    onBlur={(e) => (e.target.style.borderColor = T.border)}
+                    style={{ ...getInputStyle("message"), resize: "vertical" }}
+                    onFocus={() => setFocusedField("message")}
+                    onBlur={() => setFocusedField(null)}
                   />
-                  <button
+
+                  <motion.button
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => setSent(true)}
                     style={{
                       cursor: "pointer",
@@ -2890,15 +2928,31 @@ function Contact() {
                       color: T.white,
                       border: "none",
                       padding: "17px",
-                      borderRadius: 8,
+                      borderRadius: 10,
                       fontFamily: "'Clash Display', sans-serif",
                       fontWeight: 700,
                       fontSize: 17,
                       letterSpacing: "-0.3px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 8,
                     }}
                   >
-                    Send message →
-                  </button>
+                    Send message
+                    <motion.span
+                      initial={{ x: 0 }}
+                      animate={{ x: [0, 3, 0] }}
+                      transition={{
+                        duration: 1.6,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        repeatDelay: 1.2,
+                      }}
+                    >
+                      →
+                    </motion.span>
+                  </motion.button>
                 </div>
               )}
             </motion.div>
