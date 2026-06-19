@@ -11,7 +11,11 @@ import { organizationSchema, websiteSchema } from "../components/schema";
 export default function Home() {
   <SEO
     title="Software Engineering, AI & Cloud Services"
-    description="Kayvion Labs is a Nairobi-based ICT services company…"
+    description="Kayvion Labs is a Nairobi‑based ICT partner delivering software
+              engineering, AI solutions, cloud architecture, and cybersecurity
+              for organisations across Healthcare, FMCG, Real Estate, EdTech,
+              and Non‑Profit. We build technology that drives measurable
+              outcomes — no products, just outcomes built to last."
     path="/"
     jsonLd={[organizationSchema(), websiteSchema()]}
   />;

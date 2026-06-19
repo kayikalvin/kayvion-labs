@@ -324,7 +324,7 @@ export default function Hero() {
               gap: 28,
             }}
           >
-            <p
+<p
               style={{
                 fontFamily: "'Cabinet Grotesk', sans-serif",
                 fontSize: "clamp(15px,1.8vw,20px)",
@@ -333,9 +333,11 @@ export default function Hero() {
                 maxWidth: 440,
               }}
             >
-              End-to-end ICT services — software engineering, AI, cloud, and
-              cybersecurity — for organisations that need technology to actually
-              work.
+              Kayvion Labs is a Nairobi‑based ICT partner delivering software
+              engineering, AI solutions, cloud architecture, and cybersecurity
+              for organisations across Healthcare, FMCG, Real Estate, EdTech,
+              and Non‑Profit. We build technology that drives measurable
+              outcomes — no products, just outcomes built to last.
             </p>
             <div
               style={{
