@@ -334,8 +334,8 @@ export default function Hero() {
               }}
             >
               Kayvion Labs is a Nairobi‑based ICT partner delivering software
-              engineering, AI solutions, cloud architecture, and cybersecurity
-              for organisations across Healthcare, FMCG, Real Estate, EdTech,
+              engineering, AI solutions for organisations all across
+              Healthcare, Real Estate, EdTech,
               and Non‑Profit. We build technology that drives measurable
               outcomes — no products, just outcomes built to last.
             </p>
