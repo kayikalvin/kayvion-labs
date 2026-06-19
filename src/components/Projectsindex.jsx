@@ -15,7 +15,8 @@ import {
 } from "framer-motion";
 import SEO from "./SEO";
 import { organizationSchema, serviceListSchema, websiteSchema } from "./schema";
-import {RAW_PROJECTS} from '../utils/projectdata.js'
+import { RAW_PROJECTS } from "../utils/projectdata.js";
+import { useNavigate } from "react-router-dom";
 /* ─── TOKENS (identical to main site) ────────────────────────────────────── */
 const T = {
   bg: "#F2F1ED", // warm off‑white (unchanged)
@@ -72,8 +73,6 @@ const stag = (d = 0.08) => ({
   hidden: {},
   show: { transition: { staggerChildren: d } },
 });
-
-
 
 /* ─── TRANSFORM TO PROJECT CARD SHAPE ────────────────────────────────────── */
 const ACCENT_COLORS = [
@@ -1010,7 +1009,8 @@ function ProjectsGrid({ filter, onSelect }) {
 }
 
 /* ─── CTA BAND ────────────────────────────────────────────────────────────── */
-function CTABand({ onNavigate }) {
+function CTABand() {
+  const navigate = useNavigate();
   const [ref, inView] = useAnimInView();
   const { isTablet } = useBreakpoint();
 
@@ -1081,7 +1081,7 @@ function CTABand({ onNavigate }) {
             </p>
           </div>
           <button
-            onClick={() => onNavigate?.("contact")}
+            onClick={() => navigate("/?scroll=contact")}
             style={{
               position: "relative",
               flexShrink: 0,
@@ -1105,30 +1105,30 @@ function CTABand({ onNavigate }) {
     </motion.section>
   );
 }
-
 /* ─── ROOT ────────────────────────────────────────────────────────────────── */
-export default function ProjectsIndex({ onNavigate, onSelectProject }) {
+export default function ProjectsIndex() {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState("All");
 
   const handleSelect = (project) => {
-    onSelectProject?.(project);
+    navigate(`/projects/${project.id}`);
+    window.scrollTo({ top: 0, behavior: "instant" });
   };
-
-  <SEO
-    title="Our Projects — Software Engineering & AI Case Studies"
-    description="Explore 11+ real projects across healthcare, real estate, edtech, and more."
-    path="/projects"
-    jsonLd={[
-      organizationSchema(),
-      websiteSchema(),
-      serviceListSchema(
-        PROJECTS.map((p) => ({ title: p.name, body: p.summary })),
-      ),
-    ]}
-  />;
 
   return (
     <div style={{ background: T.bg, color: T.ink, overflowX: "hidden" }}>
+      <SEO
+        title="Our Projects — Software Engineering & AI Case Studies"
+        description="Explore 11+ real projects across healthcare, real estate, edtech, and more."
+        path="/projects"
+        jsonLd={[
+          organizationSchema(),
+          websiteSchema(),
+          serviceListSchema(
+            PROJECTS.map((p) => ({ title: p.name, body: p.summary })),
+          ),
+        ]}
+      />
       <style>{`
         @import url('https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=cabinet-grotesk@400,500,600,700,800&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1146,11 +1146,10 @@ export default function ProjectsIndex({ onNavigate, onSelectProject }) {
         }
       `}</style>
       <Cursor />
-      {/* <Navbar onNavigate={onNavigate} /> */}
       <Hero />
       <FilterBar active={filter} setActive={setFilter} />
       <ProjectsGrid filter={filter} onSelect={handleSelect} />
-      <CTABand onNavigate={onNavigate} />
+      <CTABand />
     </div>
   );
 }
