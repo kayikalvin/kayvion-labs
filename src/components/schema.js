@@ -15,7 +15,7 @@ export function organizationSchema() {
     url: SITE_URL,
     logo: `${SITE_URL}/favicon.svg`,
     description:
-      "ICT services company delivering software engineering, AI & machine learning, cloud architecture, and data analytics for organisations across Africa.",
+      "ICT services company delivering software engineering, AI & machine learning, cloud architecture, and data analytics for organisations across the country and world wide.",
     email: "info@kayvionlabs.com",
     address: {
       "@type": "PostalAddress",
@@ -54,7 +54,7 @@ export function localBusinessSchema() {
       addressCountry: "KE",
     },
     priceRange: "$$",
-    areaServed: ["Kenya", "East Africa", "Worldwide (remote)"],
+    areaServed: ["Kenya",  "Worldwide (remote)"],
   };
 }
 
@@ -79,7 +79,7 @@ export function serviceSchema({ name, description, serviceType }) {
     name,
     description,
     provider: { "@id": `${SITE_URL}/#organization` },
-    areaServed: ["Kenya", "East Africa", "Worldwide"],
+    areaServed: ["Kenya",  "Worldwide"],
   };
 }
 

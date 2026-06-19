@@ -16,7 +16,7 @@ const SITE_NAME = "Kayvion Labs";
 const SITE_URL = "https://kayvionlabs.com"; // ⬅ update once domain is live
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 const DEFAULT_DESCRIPTION =
-  "Kayvion Labs is a Nairobi-based ICT services company delivering software engineering, AI & machine learning, cloud architecture, and data analytics for organisations across Africa.";
+  "Kayvion Labs is a Nairobi-based ICT services company delivering software engineering, AI & machine learning, cloud architecture, and data analytics for organisations across the country.";
 const TWITTER_HANDLE = "@kayvionlabs"; // ⬅ update if you have a real handle
 
 export default function SEO({

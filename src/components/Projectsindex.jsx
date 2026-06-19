@@ -494,7 +494,7 @@ function Hero() {
               }}
             >
               A selection of engineering, AI, and infrastructure projects
-              delivered for clients across Africa and beyond. Every number on
+              delivered for clients across the country and beyond. Every number on
               this page is real.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
