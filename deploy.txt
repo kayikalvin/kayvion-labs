@@ -1,0 +1,3 @@
+update domain in sitemapgenerator
+update domain in robots.txt
+everytime we add a project run the sitemap generator
