@@ -501,7 +501,7 @@ function Hero() {
               {[
                 { v: `${PROJECTS.length}`, l: "Projects shown" },
                 { v: "14", l: "Countries" },
-                { v: "8yr", l: "Track record" },
+                { v: "3yr", l: "Track record" },
               ].map((s, i) => (
                 <div key={i} style={{ textAlign: "right" }}>
                   <div
