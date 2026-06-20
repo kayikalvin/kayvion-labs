@@ -7,7 +7,6 @@ import {
 } from "framer-motion";
 import { MagneticBtn } from "./MagneticBtn";
 
-
 /* ─── TOKENS ──────────────────────────────────────────────────────────────── */
 const T = {
   bg: "#F2F1ED", // warm off‑white (unchanged)
@@ -26,7 +25,6 @@ const STATS = [
   { v: "3yr", l: "In operation" },
 ];
 
-
 const HERO_CHARS = "Intelligent".split("");
 
 const HERO_SECTORS = [
@@ -37,7 +35,6 @@ const HERO_SECTORS = [
   "Non-Profit",
   "Maritime / Defence",
 ];
-
 
 function SectorTicker() {
   const [idx, setIdx] = useState(0);
@@ -84,26 +81,19 @@ function SectorTicker() {
   );
 }
 
+/* ─── LOGO IMAGES ───────────────────────────────────────────────────────────── */
+import logoDark from "../../public/k.png";
 
-
-
-
-/* ─── LOGO IMAGE ───────────────────────────────────────────────────────────── */
-import logoImage from "../../public/256.png";
-
-function LogoImage({ size = 32 }) {
+function LogoImage({ size = 20 }) {
   return (
     <img
-      src={logoImage}
-      alt="Kayvion Labs Logo"
-      style={{
-        width: size,
-        height: size,
-        objectFit: "contain",
-      }}
+      src={logoDark}
+      alt="Kayvion Labs"
+      style={{ height: size, width: "auto", objectFit: "contain" }}
     />
   );
 }
+
 
 
 function useBreakpoint() {
@@ -123,13 +113,11 @@ function useBreakpoint() {
   };
 }
 
-
 export default function Hero() {
   const [ready, setReady] = useState(false);
   const { scrollY } = useScroll();
-  const { isMobile, isTablet } = useBreakpoint();
+  const { isMobile } = useBreakpoint();
   const y = useTransform(scrollY, [0, 600], [0, isMobile ? 40 : 100]);
-  const heroOpacity = useTransform(scrollY, [0, 400], [1, 0.4]);
 
   useEffect(() => {
     const t = setTimeout(() => setReady(true), 200);
@@ -191,7 +179,7 @@ export default function Hero() {
                 flexWrap: "wrap",
               }}
             >
-<LogoImage size={20} />
+              <LogoImage size={20} />
               <span
                 style={{
                   fontFamily: "'Cabinet Grotesk', sans-serif",
@@ -308,7 +296,7 @@ export default function Hero() {
               gap: 28,
             }}
           >
-<p
+            <p
               style={{
                 fontFamily: "'Cabinet Grotesk', sans-serif",
                 fontSize: "clamp(15px,1.8vw,20px)",
@@ -318,10 +306,10 @@ export default function Hero() {
               }}
             >
               Kayvion Labs is a Nairobi‑based ICT partner delivering software
-              engineering, AI solutions for organisations all across
-              Healthcare, Real Estate, EdTech,
-              and Non‑Profit. We build technology that drives measurable
-              outcomes — no products, just outcomes built to last.
+              engineering, AI solutions for organisations all across Healthcare,
+              Real Estate, EdTech, and Non‑Profit. We build technology that
+              drives measurable outcomes — no products, just outcomes built to
+              last.
             </p>
             <div
               style={{
