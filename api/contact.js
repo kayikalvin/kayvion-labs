@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 
   try {
     await transporter.sendMail({
-      from: `"Kayvion Labs Website" <${process.env.GMAIL_USER}>`,
+      from: `"Kayvion Labs" <${process.env.GMAIL_USER}>`,
       to: process.env.GMAIL_USER,
       replyTo: email,
       subject: `New inquiry: ${service || "General"} — from ${name}`,
