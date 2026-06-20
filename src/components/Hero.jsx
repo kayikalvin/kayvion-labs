@@ -88,36 +88,20 @@ function SectorTicker() {
 
 
 
-/* ─── LOGO MARK ───────────────────────────────────────────────────────────── */
-function KMark({ size = 32, color = T.accent }) {
+/* ─── LOGO IMAGE ───────────────────────────────────────────────────────────── */
+import logoImage from "../../public/256.png";
+
+function LogoImage({ size = 32 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <path
-        d="M6 4 L6 28"
-        stroke={color}
-        strokeWidth="3.5"
-        strokeLinecap="round"
-      />
-      <path
-        d="M6 16 L22 5"
-        stroke={color}
-        strokeWidth="3.5"
-        strokeLinecap="round"
-      />
-      <path
-        d="M6 16 L22 27"
-        stroke={color}
-        strokeWidth="3.5"
-        strokeLinecap="round"
-      />
-      <path
-        d="M18 8 Q26 4 27 11 Q28 17 20 17"
-        stroke={color}
-        strokeWidth="3"
-        strokeLinecap="round"
-        fill="none"
-      />
-    </svg>
+    <img
+      src={logoImage}
+      alt="Kayvion Labs Logo"
+      style={{
+        width: size,
+        height: size,
+        objectFit: "contain",
+      }}
+    />
   );
 }
 
@@ -207,7 +191,7 @@ export default function Hero() {
                 flexWrap: "wrap",
               }}
             >
-              <KMark size={20} />
+<LogoImage size={20} />
               <span
                 style={{
                   fontFamily: "'Cabinet Grotesk', sans-serif",
