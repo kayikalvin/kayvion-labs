@@ -81,7 +81,7 @@ const ACCENT_COLORS = [
   "#FF6B6C",
   "#845EC2",
   "#FF9671",
-  "#F9F871",
+  "#757437",
   "#FF4B6E",
   "#39A2DB",
   "#A133FF",
@@ -243,7 +243,7 @@ function Navbar({ onNavigate }) {
           justifyContent: "space-between",
         }}
       >
-<button
+        <button
           data-hover
           onClick={() => onNavigate?.("home")}
           style={{
@@ -474,8 +474,8 @@ function Hero() {
               }}
             >
               A selection of engineering, AI, and infrastructure projects
-              delivered for clients across the country and beyond. Every number on
-              this page is real.
+              delivered for clients across the country and beyond. Every number
+              on this page is real.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
               {[
@@ -777,17 +777,22 @@ function ProjectCard({ project, index, onClick }) {
         >
           <motion.div
             animate={{
-              x: hovered ? 0 : -6,
-              opacity: hovered ? 1 : 0,
-              color: project.accentColor,
+              x: isTouch || hovered ? 0 : -6,
+              opacity: isTouch || hovered ? 1 : 0,
+              color: hovered
+                ? T.accent
+                : project.tags
+                  ? project.accentColor
+                  : T.accent,
             }}
             style={{
               fontFamily: "'Cabinet Grotesk', sans-serif",
-              fontSize: 14,
-              fontWeight: 700,
+              fontSize: 16,
+              fontWeight: 900,
+              color: project.accentColor, // fallback for non-animated initial paint
             }}
           >
-            View case study →
+            View case study and live Demo →
           </motion.div>
         </div>
       </div>
