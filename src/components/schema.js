@@ -45,7 +45,7 @@ export function localBusinessSchema() {
     "@type": "ProfessionalService",
     "@id": `${SITE_URL}/#localbusiness`,
     name: SITE_NAME,
-    image: `${SITE_URL}/og-image.jpg`,
+    image: `${SITE_URL}/og-image.png`,
     url: SITE_URL,
     telephone: "", // ⬅ add a phone number if you want this field populated
     address: {
