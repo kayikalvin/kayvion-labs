@@ -20,16 +20,6 @@ const SERVICES = [
     title: "Web Sites & Web Apps",
     body: "High-performance web applications and native mobile experiences. Designed to convert, built to scale without rewrites.",
   },
-  // {
-  //   id: "04",
-  //   title: "Cloud Architecture",
-  //   body: "AWS, Azure, GCP — migration, infrastructure-as-code, and managed cloud at every scale. Resilient, observable, cost-efficient.",
-  // },
-  // {
-  //   id: "05",
-  //   title: "Cybersecurity",
-  //   body: "Threat modelling, penetration testing, compliance, and continuous monitoring. Security that ships with your product, not after.",
-  // },
   {
     id: "06",
     title: "Data & Analytics",
@@ -40,11 +30,6 @@ const SERVICES = [
     title: "API & Integration",
     body: "RESTful APIs, microservices, and enterprise integration that eliminates silos, reduces latency, and unlocks velocity.",
   },
-  // {
-  //   id: "08",
-  //   title: "Business Automation",
-  //   body: "Workflow design and intelligent automation that multiplies throughput. We find the friction and engineer it out.",
-  // },
   {
     id: "09",
     title: "Technology Consulting",
@@ -52,20 +37,16 @@ const SERVICES = [
   },
 ];
 
-
-
-
-
-
 /* ─── TOKENS ──────────────────────────────────────────────────────────────── */
 const T = {
-  bg: "#F2F1ED", // warm off‑white (unchanged)
-  bgAlt: "#EBE9E4", // soft greige (unchanged)
-  ink: "#1A1A1A", // softer near‑black, less harsh than #0A0A0A
-  muted: "#8F8C83", // warmer grey with a hint of olive
-  border: "#D9D5CE", // subtle warm border, slightly darker than bgAlt
-  accent: "#2255FF", // brand blue (unchanged)
-  white: "#FFFFFF", // pure white (unchanged)
+  bg: "#F2F1ED",
+  bgAlt: "#EBE9E4",
+  ink: "#1A1A1A",
+  muted: "#8F8C83",
+  border: "#D9D5CE",
+  accent: "#2255FF",
+  white: "#FFFFFF",
+  error: "#E5484D",
 };
 
 /* ─── ANIMATION HELPERS ───────────────────────────────────────────────────── */
@@ -89,17 +70,17 @@ function useAnimInView(once = true) {
   return [ref, inView];
 }
 
-
-
-
 export default function Contact() {
   const [form, setForm] = useState({
     name: "",
     email: "",
     service: "",
     message: "",
+    company: "", // honeypot — real users never fill this
   });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(null);
   const [ref, inView] = useAnimInView();
   const { isTablet, isMobile } = useBreakpoint();
   const [focusedField, setFocusedField] = useState(null);
@@ -120,6 +101,41 @@ export default function Contact() {
         ? `0 0 0 4px ${T.accent}1A`
         : "0 1px 2px rgba(0,0,0,0.03)",
   });
+
+  const handleSubmit = async () => {
+    setError(null);
+
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      setError("Please fill in your name, email, and message.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email.trim())) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setSending(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || "Failed to send");
+
+      setSent(true);
+    } catch (err) {
+      setError(
+        "Something went wrong sending your message. Please email us directly at info@kayvionlabs.com.",
+      );
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <section
@@ -369,6 +385,26 @@ export default function Contact() {
                     overflowY: "auto",
                   }}
                 >
+                  {/* Honeypot field — visually hidden, bots fill it, humans never see it */}
+                  <input
+                    type="text"
+                    name="company"
+                    value={form.company}
+                    onChange={(e) =>
+                      setForm({ ...form, company: e.target.value })
+                    }
+                    tabIndex={-1}
+                    autoComplete="off"
+                    style={{
+                      position: "absolute",
+                      width: 1,
+                      height: 1,
+                      opacity: 0,
+                      pointerEvents: "none",
+                    }}
+                    aria-hidden="true"
+                  />
+
                   <div
                     style={{
                       display: "grid",
@@ -390,6 +426,7 @@ export default function Contact() {
                         style={getInputStyle(f.k)}
                         onFocus={() => setFocusedField(f.k)}
                         onBlur={() => setFocusedField(null)}
+                        disabled={sending}
                       />
                     ))}
                   </div>
@@ -402,6 +439,7 @@ export default function Contact() {
                       }
                       onFocus={() => setFocusedField("service")}
                       onBlur={() => setFocusedField(null)}
+                      disabled={sending}
                       style={{
                         ...getInputStyle("service"),
                         color: form.service ? T.ink : T.muted,
@@ -441,17 +479,39 @@ export default function Contact() {
                     onChange={(e) =>
                       setForm({ ...form, message: e.target.value })
                     }
-                    style={{ ...getInputStyle("message"), height: 180,  resize: "none" }}
+                    style={{ ...getInputStyle("message"), height: 180, resize: "none" }}
                     onFocus={() => setFocusedField("message")}
                     onBlur={() => setFocusedField(null)}
+                    disabled={sending}
                   />
 
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      style={{
+                        fontFamily: "'Cabinet Grotesk', sans-serif",
+                        fontSize: 13.5,
+                        color: T.error,
+                        background: "rgba(229,72,77,0.08)",
+                        border: "1px solid rgba(229,72,77,0.25)",
+                        borderRadius: 8,
+                        padding: "10px 14px",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {error}
+                    </motion.div>
+                  )}
+
                   <motion.button
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setSent(true)}
+                    whileHover={{ scale: sending ? 1 : 1.01 }}
+                    whileTap={{ scale: sending ? 1 : 0.98 }}
+                    onClick={handleSubmit}
+                    disabled={sending}
                     style={{
-                      cursor: "pointer",
+                      cursor: sending ? "not-allowed" : "pointer",
+                      opacity: sending ? 0.7 : 1,
                       background: T.ink,
                       color: T.white,
                       border: "none",
@@ -467,19 +527,21 @@ export default function Contact() {
                       gap: 8,
                     }}
                   >
-                    Send message
-                    <motion.span
-                      initial={{ x: 0 }}
-                      animate={{ x: [0, 3, 0] }}
-                      transition={{
-                        duration: 1.6,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        repeatDelay: 1.2,
-                      }}
-                    >
-                      →
-                    </motion.span>
+                    {sending ? "Sending…" : "Send message"}
+                    {!sending && (
+                      <motion.span
+                        initial={{ x: 0 }}
+                        animate={{ x: [0, 3, 0] }}
+                        transition={{
+                          duration: 1.6,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          repeatDelay: 1.2,
+                        }}
+                      >
+                        →
+                      </motion.span>
+                    )}
                   </motion.button>
                 </div>
               )}
