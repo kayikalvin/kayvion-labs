@@ -184,6 +184,29 @@ function Cursor() {
   );
 }
 
+
+import logoLight from "../../public/logo_light.png";
+
+// function LogoImage({ size = 20 }) {
+//   return (
+//     <img
+//       src={logoDark}
+//       alt="Kayvion Labs"
+//       style={{ height: size, width: "auto", objectFit: "contain" }}
+//     />
+//   );
+// }
+
+function LogoLight({ height = 68, maxWidth = 320 }) {
+  return (
+    <img
+      src={logoLight}
+      alt="Kayvion Labs Logo"
+      style={{ height, width: "auto", maxWidth, objectFit: "contain" }}
+    />
+  );
+}
+
 /* ─── LOGO MARK ───────────────────────────────────────────────────────────── */
 function KMark({ size = 32, color = T.accent }) {
   return (
@@ -275,13 +298,21 @@ function Navbar() {
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           <button
             data-hover
-            onClick={() => navigate("/")}
-            style={{ background: "none", border: "none", cursor: isTouch ? "pointer" : "none", display: "flex", alignItems: "center", gap: 8 }}
+            onClick={() => {
+              navigate("/");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: isDesktop ? "none" : "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              justifyContent: "center",
+            }}
           >
-            <KMark size={28} />
-            <span style={{ fontFamily: "'Clash Display', sans-serif", fontSize: 17, fontWeight: 600, color: T.ink, letterSpacing: "-0.4px" }}>
-              Kayvion<span style={{ color: T.accent }}>Labs</span>
-            </span>
+            <LogoLight height={32} />
           </button>
           <span style={{ color: T.border, fontSize: 18 }}>·</span>
           <button
