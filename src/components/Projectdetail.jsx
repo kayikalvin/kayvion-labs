@@ -112,6 +112,7 @@ const slugify = (text) =>
 const ALL_PROJECTS = RAW_PROJECTS.map((p, i) => ({
   id: slugify(p.title),
   name: p.title,
+  image: p.image,
   color: BG_COLOR,
   accentColor: ACCENT_COLORS[i % ACCENT_COLORS.length],
   metric: {
@@ -453,11 +454,248 @@ function Navbar() {
 }
 
 /* ─── HERO ────────────────────────────────────────────────────────────────── */
+// function DetailHero({ project }) {
+//   const [ready, setReady] = useState(false);
+//   const { isMobile } = useBreakpoint();
+//   const { scrollY } = useScroll();
+//   const bgY = useTransform(scrollY, [0, 500], [0, 80]);
+
+//   useEffect(() => {
+//     const t = setTimeout(() => setReady(true), 100);
+//     return () => clearTimeout(t);
+//   }, []);
+
+//   return (
+//     <section
+//       style={{
+//         minHeight: "55vh",
+//         background: project.color,
+//         display: "flex",
+//         flexDirection: "column",
+//         justifyContent: "flex-end",
+//         paddingTop: 64,
+//         overflow: "hidden",
+//         position: "relative",
+//       }}
+//     >
+//       <motion.div
+//         style={{
+//           y: bgY,
+//           position: "absolute",
+//           inset: 0,
+//           backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)`,
+//           backgroundSize: "32px 32px",
+//           pointerEvents: "none",
+//         }}
+//       />
+//       <div
+//         style={{
+//           position: "absolute",
+//           top: "20%",
+//           right: "10%",
+//           width: 400,
+//           height: 400,
+//           borderRadius: "50%",
+//           background: project.accentColor,
+//           opacity: 0.07,
+//           filter: "blur(80px)",
+//           pointerEvents: "none",
+//         }}
+//       />
+
+//       <div
+//         style={{
+//           maxWidth: 1280,
+//           margin: "0 auto",
+//           width: "100%",
+//           padding: "clamp(48px,8vw,100px) clamp(20px,5vw,40px) 64px",
+//           position: "relative",
+//         }}
+//       >
+//         {ready && (
+//           <motion.div
+//             initial={{ opacity: 0, y: 12 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             transition={{ duration: 0.5 }}
+//             style={{
+//               display: "flex",
+//               alignItems: "center",
+//               gap: 10,
+//               marginBottom: isMobile ? 32 : 48,
+//             }}
+//           >
+//             <KMark size={18} color={project.accentColor} />
+//             <span
+//               style={{
+//                 fontFamily: "'Cabinet Grotesk', sans-serif",
+//                 fontSize: 12,
+//                 fontWeight: 600,
+//                 color: "rgba(255,255,255,0.4)",
+//                 letterSpacing: "0.1em",
+//                 textTransform: "uppercase",
+//               }}
+//             >
+//               Case study
+//             </span>
+//             <span
+//               style={{
+//                 width: 1,
+//                 height: 12,
+//                 background: "rgba(255,255,255,0.15)",
+//                 display: "inline-block",
+//               }}
+//             />
+//             <span
+//               style={{
+//                 fontFamily: "'Cabinet Grotesk', sans-serif",
+//                 fontSize: 12,
+//                 color: "rgba(255,255,255,0.4)",
+//               }}
+//             >
+//               {project.index} /{" "}
+//               {ALL_PROJECTS.length.toString().padStart(2, "0")}
+//             </span>
+//           </motion.div>
+//         )}
+
+//         <div style={{ overflow: "hidden", marginBottom: 20 }}>
+//           {ready && (
+//             <motion.h1
+//               initial={{ y: "100%" }}
+//               animate={{ y: "0%" }}
+//               transition={{
+//                 duration: 0.85,
+//                 ease: [0.22, 1, 0.36, 1],
+//                 delay: 0.1,
+//               }}
+//               style={{
+//                 fontFamily: "'Clash Display', sans-serif",
+//                 fontSize: "clamp(36px, 7vw, 100px)",
+//                 fontWeight: 700,
+//                 letterSpacing: isMobile ? "-2px" : "-4px",
+//                 color: T.white,
+//                 lineHeight: 0.96,
+//               }}
+//             >
+//               {project.name}
+//             </motion.h1>
+//           )}
+//         </div>
+
+//         {ready && (
+//           <motion.div
+//             initial={{ opacity: 0, y: 20 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             transition={{ duration: 0.7, delay: 0.45 }}
+//             style={{ marginBottom: 48 }}
+//           >
+//             <span
+//               style={{
+//                 fontFamily: "'Clash Display', sans-serif",
+//                 fontSize: "clamp(52px, 10vw, 140px)",
+//                 fontWeight: 700,
+//                 letterSpacing: isMobile ? "-3px" : "-6px",
+//                 color: project.accentColor,
+//                 lineHeight: 0.92,
+//                 display: "block",
+//               }}
+//             >
+//               {project.metric.value}
+//             </span>
+//             <span
+//               style={{
+//                 fontFamily: "'Cabinet Grotesk', sans-serif",
+//                 fontSize: 15,
+//                 color: "rgba(255,255,255,0.45)",
+//                 marginTop: 8,
+//                 display: "block",
+//               }}
+//             >
+//               {project.metric.label}
+//             </span>
+//           </motion.div>
+//         )}
+
+//         {ready && (
+//           <motion.div
+//             initial={{ opacity: 0 }}
+//             animate={{ opacity: 1 }}
+//             transition={{ delay: 0.65, duration: 0.5 }}
+//             style={{
+//               paddingTop: 32,
+//               borderTop: "1px solid rgba(255,255,255,0.1)",
+//               display: "flex",
+//               flexWrap: "wrap",
+//               gap: isMobile ? 24 : 48,
+//             }}
+//           >
+//             {[
+//               { l: "Client", v: project.client },
+//               { l: "Sector", v: project.sector },
+//               { l: "Year", v: project.year },
+//               { l: "Services", v: project.services.join(", ") },
+//             ].map((item, i) => (
+//               <div key={i}>
+//                 <div
+//                   style={{
+//                     fontFamily: "'Cabinet Grotesk', sans-serif",
+//                     fontSize: 10,
+//                     fontWeight: 700,
+//                     letterSpacing: "0.12em",
+//                     textTransform: "uppercase",
+//                     color: "rgba(255,255,255,0.28)",
+//                     marginBottom: 6,
+//                   }}
+//                 >
+//                   {item.l}
+//                 </div>
+//                 <div
+//                   style={{
+//                     fontFamily: "'Cabinet Grotesk', sans-serif",
+//                     fontSize: 14,
+//                     fontWeight: 500,
+//                     color: "rgba(255,255,255,0.65)",
+//                     lineHeight: 1.5,
+//                   }}
+//                 >
+//                   {item.v}
+//                 </div>
+//               </div>
+//             ))}
+//           </motion.div>
+//         )}
+
+//         {/* ── Live demo CTA ── */}
+//         {ready && project.url && (
+//           <motion.div
+//             initial={{ opacity: 0, y: 12 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             transition={{ delay: 0.8, duration: 0.5 }}
+//             style={{ marginTop: isMobile ? 32 : 40 }}
+//           >
+//             <MagneticBtn
+//               dark
+//               onClick={() =>
+//                 window.open(project.url, "_blank", "noopener,noreferrer")
+//               }
+//             >
+//               View live site
+//             </MagneticBtn>
+//           </motion.div>
+//         )}
+//       </div>
+//     </section>
+//   );
+// }
+
 function DetailHero({ project }) {
   const [ready, setReady] = useState(false);
   const { isMobile } = useBreakpoint();
   const { scrollY } = useScroll();
   const bgY = useTransform(scrollY, [0, 500], [0, 80]);
+  
+  // Parallax scale for the background image
+  const imageScale = useTransform(scrollY, [0, 500], [1, 1.2]);
 
   useEffect(() => {
     const t = setTimeout(() => setReady(true), 100);
@@ -477,6 +715,7 @@ function DetailHero({ project }) {
         position: "relative",
       }}
     >
+      {/* Dot grid animated background */}
       <motion.div
         style={{
           y: bgY,
@@ -487,6 +726,8 @@ function DetailHero({ project }) {
           pointerEvents: "none",
         }}
       />
+      
+      {/* Colored glow blob */}
       <div
         style={{
           position: "absolute",
@@ -501,6 +742,22 @@ function DetailHero({ project }) {
           pointerEvents: "none",
         }}
       />
+
+      {/* ── Blurred background image (parallax) ── */}
+      {project.image && (
+        <motion.div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `url(${project.image})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.15,
+            filter: "blur(8px)",
+            scale: imageScale,
+          }}
+        />
+      )}
 
       <div
         style={{
@@ -551,8 +808,7 @@ function DetailHero({ project }) {
                 color: "rgba(255,255,255,0.4)",
               }}
             >
-              {project.index} /{" "}
-              {ALL_PROJECTS.length.toString().padStart(2, "0")}
+              {project.index} / {ALL_PROJECTS.length.toString().padStart(2, "0")}
             </span>
           </motion.div>
         )}
