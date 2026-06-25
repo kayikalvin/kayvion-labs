@@ -1,16 +1,3 @@
-import xgeneImg from '../assets/xgene.png';
-import siprosaImg from '../assets/siprosa.png';
-import sonarImg from '../assets/sonar.png';
-import dantraImg from '../assets/dantra.png';
-import matakiriadminImg from '../assets/madmin.png';
-import matakiriImg from '../assets/matakiriclient.png';
-import eleventhImg from '../assets/eleventh.png';
-import gymImg from '../assets/gym.png';
-import somanasiImg  from '../assets/somanasi.png';
-import digimagicImg   from '../assets/sonar.png';
-
-
-
 export const RAW_PROJECTS = [
   // {
   //   title: "Kenyan Real Estate Website",
@@ -61,7 +48,7 @@ export const RAW_PROJECTS = [
     ],
     code: "https://github.com/kayikalvin/xgenelabs",
     url: "https://www.xgenelabs.co.ke/",
-    image: xgeneImg || '',
+
     features: [
       "Service showcase – genetic testing, diagnostic kits, medical equipment",
       "Prepaid testing program with M-Pesa tokens for healthcare facilities",
@@ -92,7 +79,7 @@ export const RAW_PROJECTS = [
     ],
     code: "https://github.com/kayikalvin/siprosa-foundation",
     url: "https://www.siprosa-edu.org/",
-    image: siprosaImg || '',
+    
     features: [
       "Mission & values communication",
       "Futures Green Schools model showcase",
@@ -123,7 +110,7 @@ export const RAW_PROJECTS = [
     ],
     code: "https://github.com/kayikalvin/somanasi",
     url: "https://somanasi.org/",
-    image: somanasiImg || '',
+   
     features: [
       "Course listings – digital literacy, cybersecurity, web dev, AI agent dev",
       "Business services – full‑stack apps, AI agents, chatbots",
@@ -154,7 +141,7 @@ export const RAW_PROJECTS = [
     ],
     code: "https://github.com/kayikalvin/digimagictech",
     url: "https://digimagictech.org/",
-    image: digimagicImg || '',
+   
     features: [
       "Age‑based courses (Primary – KES 15k, Secondary – KES 19.5k, Teachers – digital literacy)",
       "Expert team (professors of education, software engineering academics)",
@@ -184,7 +171,7 @@ export const RAW_PROJECTS = [
     ],
     code: "https://github.com/kayikalvin/gym",
     url: "https://gym-sable-one.vercel.app/",
-    image: gymImg || '',
+   
     features: [
       "Hero section with strong call‑to‑action",
       "Program highlights (training options)",
@@ -214,7 +201,7 @@ export const RAW_PROJECTS = [
     ],
     code: "https://github.com/kayikalvin/eleventh-hour",
     url: "https://the-eleventh-hour.vercel.app/",
-    image: eleventhImg || '',
+  
     features: [
       "Hero section with menu call‑to‑action",
       "Categorised menu display (coffee, tea, food) with prices",
@@ -245,7 +232,7 @@ export const RAW_PROJECTS = [
     ],
     code: "https://github.com/kayikalvin/matakiri-client",
     url: "https://matakiri-website-revamp-client.vercel.app/",
-    image: matakiriImg || '',
+
     features: [
       "Mission & values communication",
       "Projects/initiatives timeline or cards",
@@ -277,7 +264,7 @@ export const RAW_PROJECTS = [
     ],
     code: "https://github.com/kayikalvin/matakiri-admin",
     url: "https://matakiri-website-revamp-admin-dashb-orpin.vercel.app/",
-    image: matakiriadminImg || '',
+    
     features: [
       "Authentication (JWT or session‑based)",
       "Manage projects, success stories, team members (CRUD)",
@@ -309,7 +296,7 @@ export const RAW_PROJECTS = [
     ],
     code: "https://github.com/kayikalvin/dantra-limited",
     url: "https://dantra-limited.vercel.app/",
-    image: dantraImg || '',
+
     features: [
       "Hero section with animated headline and CTA buttons",
       "Product category display (Beverages, Snacks, Personal Care, etc.)",
@@ -339,7 +326,7 @@ export const RAW_PROJECTS = [
     ],
     code: "https://github.com/kayikalvin/sonar-rock-vs-mine-ui",
     url: "https://sonar-rock-vs-mine-ui.vercel.app/",
-    image: sonarImg || '',
+  
     features: [
       "Real‑time classification (Mine vs Rock)",
       "Confidence scoring (70‑100%)",

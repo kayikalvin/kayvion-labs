@@ -17,6 +17,28 @@ import SEO from "./SEO";
 import { organizationSchema, serviceListSchema, websiteSchema } from "./schema";
 import { RAW_PROJECTS } from "../utils/projectdata.js";
 import { useNavigate } from "react-router-dom";
+
+import xgeneImg from '../assets/xgene.png';
+import siprosaImg from '../assets/siprosa.png';
+import sonarImg from '../assets/sonar.png';
+import dantraImg from '../assets/dantra.png';
+import matakiriadminImg from '../assets/madmin.png';
+import matakiriImg from '../assets/matakiriclient.png';
+import eleventhImg from '../assets/eleventh.png';
+import gymImg from '../assets/gym.png';
+import somanasiImg  from '../assets/somanasi.png';
+import digimagicImg   from '../assets/sonar.png';
+
+
+
+
+
+
+
+
+
+
+
 /* ─── TOKENS (identical to main site) ────────────────────────────────────── */
 const T = {
   bg: "#F2F1ED", // warm off‑white (unchanged)
