@@ -1,5 +1,5 @@
 import xgeneImg from '../../public/xgene.png';
-import siprosaImg from '../../public/sonar.png';
+import siprosaImg from '../../public/siprosa.png';
 import sonarImg from '../../public/sonar.png';
 import dantraImg from '../../public/sonar.png';
 import matakiriadminImg from '../../public/sonar.png';
