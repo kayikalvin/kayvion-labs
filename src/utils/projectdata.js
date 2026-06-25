@@ -1,4 +1,4 @@
-import xgeneImg from '../../public/sonar.png';
+import xgeneImg from '../../public/xgene.png';
 import siprosaImg from '../../public/sonar.png';
 import sonarImg from '../../public/sonar.png';
 import dantraImg from '../../public/sonar.png';
