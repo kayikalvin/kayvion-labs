@@ -120,6 +120,7 @@ export const PROJECTS = RAW_PROJECTS.map((p, i) => {
     year: "2025",
     services: p.tech,
     headline,
+    image: p.image || '',
     summary: p.description,
     metric: {
       value: p.features.length.toString(),
@@ -592,6 +593,214 @@ function FilterBar({ active, setActive }) {
 }
 
 /* ─── PROJECT CARD ────────────────────────────────────────────────────────── */
+// function ProjectCard({ project, index, onClick }) {
+//   const isTouch = useIsTouch();
+//   const [hovered, setHovered] = useState(false);
+//   const [ref, inView] = useAnimInView();
+
+//   return (
+//     <motion.article
+//       ref={ref}
+//       initial={{ opacity: 0, y: 48 }}
+//       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 48 }}
+//       transition={{
+//         duration: 0.7,
+//         ease: [0.22, 1, 0.36, 1],
+//         delay: (index % 3) * 0.08,
+//       }}
+//       onClick={() => onClick(project)}
+//       onMouseEnter={() => setHovered(true)}
+//       onMouseLeave={() => setHovered(false)}
+//       data-hover
+//       style={{
+//         cursor: isTouch ? "pointer" : "none",
+//         background: hovered ? project.color : T.white,
+//         border: `1px solid ${hovered ? "transparent" : T.border}`,
+//         borderRadius: 14,
+//         overflow: "hidden",
+//         transition: "background 0.4s ease, border-color 0.4s ease",
+//         display: "flex",
+//         flexDirection: "column",
+//         position: "relative",
+//       }}
+//     >
+//       {/* Number + year strip */}
+//       <div
+//         style={{
+//           display: "flex",
+//           justifyContent: "space-between",
+//           alignItems: "center",
+//           padding: "20px 24px 0",
+//         }}
+//       >
+//         <span
+//           style={{
+//             fontFamily: "'Cabinet Grotesk', sans-serif",
+//             fontSize: 11,
+//             fontWeight: 700,
+//             letterSpacing: "0.1em",
+//             color: hovered ? "rgba(255,255,255,0.35)" : T.muted,
+//             transition: "color 0.4s",
+//           }}
+//         >
+//           {project.index}
+//         </span>
+//         <span
+//           style={{
+//             fontFamily: "'Cabinet Grotesk', sans-serif",
+//             fontSize: 11,
+//             fontWeight: 600,
+//             letterSpacing: "0.06em",
+//             color: hovered ? "rgba(255,255,255,0.35)" : T.muted,
+//             transition: "color 0.4s",
+//           }}
+//         >
+//           {project.year}
+//         </span>
+//       </div>
+
+//       {/* Big metric */}
+//       <div style={{ padding: "12px 24px 0" }}>
+//         <motion.div
+//           animate={{ color: hovered ? project.accentColor : T.ink }}
+//           transition={{ duration: 0.4 }}
+//           style={{
+//             fontFamily: "'Clash Display', sans-serif",
+//             fontSize: "clamp(44px, 6vw, 72px)",
+//             fontWeight: 700,
+//             letterSpacing: "-2px",
+//             lineHeight: 1,
+//           }}
+//         >
+//           {project.metric.value}
+//         </motion.div>
+//         <div
+//           style={{
+//             fontFamily: "'Cabinet Grotesk', sans-serif",
+//             fontSize: 12,
+//             color: hovered ? "rgba(255,255,255,0.45)" : T.muted,
+//             marginTop: 4,
+//             transition: "color 0.4s",
+//           }}
+//         >
+//           {project.metric.label}
+//         </div>
+//       </div>
+
+//       {/* Divider */}
+//       <div
+//         style={{
+//           margin: "20px 24px",
+//           height: 1,
+//           background: hovered ? "rgba(255,255,255,0.08)" : T.border,
+//           transition: "background 0.4s",
+//         }}
+//       />
+
+//       {/* Content */}
+//       <div
+//         style={{
+//           padding: "0 24px 24px",
+//           flex: 1,
+//           display: "flex",
+//           flexDirection: "column",
+//         }}
+//       >
+//         <div
+//           style={{
+//             fontFamily: "'Cabinet Grotesk', sans-serif",
+//             fontSize: 11,
+//             fontWeight: 700,
+//             letterSpacing: "0.1em",
+//             textTransform: "uppercase",
+//             color: hovered ? "rgba(255,255,255,0.35)" : T.muted,
+//             marginBottom: 10,
+//             transition: "color 0.4s",
+//           }}
+//         >
+//           {project.client} · {project.sector}
+//         </div>
+//         <h2
+//           style={{
+//             fontFamily: "'Clash Display', sans-serif",
+//             fontSize: "clamp(18px, 2vw, 22px)",
+//             fontWeight: 700,
+//             letterSpacing: "-0.5px",
+//             color: hovered ? T.white : T.ink,
+//             lineHeight: 1.18,
+//             marginBottom: 12,
+//             transition: "color 0.4s",
+//           }}
+//         >
+//           {project.name}
+//         </h2>
+//         <p
+//           style={{
+//             fontFamily: "'Cabinet Grotesk', sans-serif",
+//             fontSize: 14,
+//             lineHeight: 1.68,
+//             color: hovered ? "rgba(255,255,255,0.55)" : T.muted,
+//             flex: 1,
+//             transition: "color 0.4s",
+//           }}
+//         >
+//           {project.summary}
+//         </p>
+
+//         {/* Tags */}
+//         <div
+//           style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 20 }}
+//         >
+//           {project.tags.map((tag) => (
+//             <span
+//               key={tag}
+//               style={{
+//                 fontFamily: "'Cabinet Grotesk', sans-serif",
+//                 fontSize: 11,
+//                 fontWeight: 600,
+//                 letterSpacing: "0.04em",
+//                 color: hovered ? "rgba(255,255,255,0.5)" : T.muted,
+//                 background: hovered ? "rgba(255,255,255,0.07)" : T.bgAlt,
+//                 border: `1px solid ${hovered ? "rgba(255,255,255,0.1)" : T.border}`,
+//                 padding: "4px 10px",
+//                 borderRadius: 100,
+//                 transition: "all 0.4s",
+//               }}
+//             >
+//               {tag}
+//             </span>
+//           ))}
+//         </div>
+
+//         {/* CTA row */}
+//         <div
+//           style={{ display: "flex", justifyContent: "flex-end", marginTop: 20 }}
+//         >
+//           <motion.div
+//             animate={{
+//               x: isTouch || hovered ? 0 : -6,
+//               opacity: isTouch || hovered ? 1 : 0,
+//               color: hovered
+//                 ? T.accent
+//                 : project.tags
+//                   ? project.accentColor
+//                   : T.accent,
+//             }}
+//             style={{
+//               fontFamily: "'Cabinet Grotesk', sans-serif",
+//               fontSize: 16,
+//               fontWeight: 900,
+//               color: project.accentColor, // fallback for non-animated initial paint
+//             }}
+//           >
+//             View case study and live Demo →
+//           </motion.div>
+//         </div>
+//       </div>
+//     </motion.article>
+//   );
+// }
+
 function ProjectCard({ project, index, onClick }) {
   const isTouch = useIsTouch();
   const [hovered, setHovered] = useState(false);
@@ -623,52 +832,89 @@ function ProjectCard({ project, index, onClick }) {
         position: "relative",
       }}
     >
-      {/* Number + year strip */}
+      {/* ── Project Image (if available) ── */}
+      {project.image && (
+        <div style={{ position: "relative", overflow: "hidden", height: 200 }}>
+          <motion.img
+            src={project.image}
+            alt={project.name}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              transition: "transform 0.5s ease",
+              transform: hovered ? "scale(1.05)" : "scale(1)",
+            }}
+          />
+          {/* dark gradient overlay on hover to blend with card */}
+          <motion.div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: `linear-gradient(to top, ${project.color}cc, transparent 60%)`,
+              opacity: hovered ? 1 : 0,
+              transition: "opacity 0.4s",
+              pointerEvents: "none",
+            }}
+          />
+        </div>
+      )}
+
+      {/* ── Card content ── */}
       <div
         style={{
+          padding: "20px 24px 24px",
+          flex: 1,
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "20px 24px 0",
+          flexDirection: "column",
         }}
       >
-        <span
+        {/* Number + year strip */}
+        <div
           style={{
-            fontFamily: "'Cabinet Grotesk', sans-serif",
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: "0.1em",
-            color: hovered ? "rgba(255,255,255,0.35)" : T.muted,
-            transition: "color 0.4s",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 12,
           }}
         >
-          {project.index}
-        </span>
-        <span
-          style={{
-            fontFamily: "'Cabinet Grotesk', sans-serif",
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: "0.06em",
-            color: hovered ? "rgba(255,255,255,0.35)" : T.muted,
-            transition: "color 0.4s",
-          }}
-        >
-          {project.year}
-        </span>
-      </div>
+          <span
+            style={{
+              fontFamily: "'Cabinet Grotesk', sans-serif",
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              color: hovered ? "rgba(255,255,255,0.35)" : T.muted,
+              transition: "color 0.4s",
+            }}
+          >
+            {project.index}
+          </span>
+          <span
+            style={{
+              fontFamily: "'Cabinet Grotesk', sans-serif",
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.06em",
+              color: hovered ? "rgba(255,255,255,0.35)" : T.muted,
+              transition: "color 0.4s",
+            }}
+          >
+            {project.year}
+          </span>
+        </div>
 
-      {/* Big metric */}
-      <div style={{ padding: "12px 24px 0" }}>
+        {/* Big metric */}
         <motion.div
           animate={{ color: hovered ? project.accentColor : T.ink }}
           transition={{ duration: 0.4 }}
           style={{
             fontFamily: "'Clash Display', sans-serif",
-            fontSize: "clamp(44px, 6vw, 72px)",
+            fontSize: "clamp(36px, 5vw, 56px)",
             fontWeight: 700,
             letterSpacing: "-2px",
             lineHeight: 1,
+            marginBottom: 4,
           }}
         >
           {project.metric.value}
@@ -678,33 +924,14 @@ function ProjectCard({ project, index, onClick }) {
             fontFamily: "'Cabinet Grotesk', sans-serif",
             fontSize: 12,
             color: hovered ? "rgba(255,255,255,0.45)" : T.muted,
-            marginTop: 4,
+            marginBottom: 16,
             transition: "color 0.4s",
           }}
         >
           {project.metric.label}
         </div>
-      </div>
 
-      {/* Divider */}
-      <div
-        style={{
-          margin: "20px 24px",
-          height: 1,
-          background: hovered ? "rgba(255,255,255,0.08)" : T.border,
-          transition: "background 0.4s",
-        }}
-      />
-
-      {/* Content */}
-      <div
-        style={{
-          padding: "0 24px 24px",
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+        {/* Client & sector */}
         <div
           style={{
             fontFamily: "'Cabinet Grotesk', sans-serif",
@@ -779,17 +1006,12 @@ function ProjectCard({ project, index, onClick }) {
             animate={{
               x: isTouch || hovered ? 0 : -6,
               opacity: isTouch || hovered ? 1 : 0,
-              color: hovered
-                ? T.accent
-                : project.tags
-                  ? project.accentColor
-                  : T.accent,
             }}
             style={{
               fontFamily: "'Cabinet Grotesk', sans-serif",
               fontSize: 16,
               fontWeight: 900,
-              color: project.accentColor, // fallback for non-animated initial paint
+              color: hovered ? T.accent : project.accentColor,
             }}
           >
             View case study and live Demo →
