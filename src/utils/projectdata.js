@@ -1,13 +1,13 @@
-import xgeneImg from '/xgene.png';
-import siprosaImg from '/siprosa.png';
-import sonarImg from '/sonar.png';
-import dantraImg from '/dantra.png';
-import matakiriadminImg from '/madmin.png';
-import matakiriImg from '/matakiriclient.png';
-import eleventhImg from '/eleventh.png';
-import gymImg from '/gym.png';
-import somanasiImg  from '/somanasi.png';
-import digimagicImg   from '/sonar.png';
+import xgeneImg from '../assets/xgene.png';
+import siprosaImg from '../assets/siprosa.png';
+import sonarImg from '../assets/sonar.png';
+import dantraImg from '../assets/dantra.png';
+import matakiriadminImg from '../assets/madmin.png';
+import matakiriImg from '../assets/matakiriclient.png';
+import eleventhImg from '../assets/eleventh.png';
+import gymImg from '../assets/gym.png';
+import somanasiImg  from '../assets/somanasi.png';
+import digimagicImg   from '../assets/sonar.png';
 
 
 
