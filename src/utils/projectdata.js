@@ -2,7 +2,7 @@ import xgeneImg from '../../public/xgene.png';
 import siprosaImg from '../../public/siprosa.png';
 import sonarImg from '../../public/sonar.png';
 import dantraImg from '../../public/sonar.png';
-import matakiriadminImg from '../../public/sonar.png';
+import matakiriadminImg from '../../public/madmin.png';
 import matakiriImg from '../../public/matakiriclient.png';
 import eleventhImg from '../../public/eleventh.png';
 import gymImg from '../../public/gym.png';
