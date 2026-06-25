@@ -136,7 +136,7 @@ const slugify = (text) =>
 const ALL_PROJECTS = RAW_PROJECTS.map((p, i) => ({
   id: slugify(p.title),
   name: p.title,
-  image: p.image,
+  image: PROJECT_IMAGES[slugify(p.title)] || null,
   color: BG_COLOR,
   accentColor: ACCENT_COLORS[i % ACCENT_COLORS.length],
   metric: {
@@ -229,7 +229,7 @@ function Cursor() {
   );
 }
 
-import logoLight from "../../public/logo_light.png";
+import logoLight from "/logo_light.png";
 
 // function LogoImage({ size = 20 }) {
 //   return (

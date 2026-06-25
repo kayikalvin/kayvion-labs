@@ -233,7 +233,7 @@ function Cursor() {
 }
 
 /* ─── LOGO IMAGES ───────────────────────────────────────────────────────────── */
-import logoDark from "../../public/k.png";
+import logoDark from "/k.png";
 
 function LogoImage({ size = 20 }) {
   return (
