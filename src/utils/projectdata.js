@@ -4,7 +4,7 @@ import sonarImg from '../../public/sonar.png';
 import dantraImg from '../../public/sonar.png';
 import matakiriadminImg from '../../public/sonar.png';
 import matakiriImg from '../../public/sonar.png';
-import eleventhImg from '../../public/sonar.png';
+import eleventhImg from '../../public/eleventh.png';
 import gymImg from '../../public/gym.png';
 import somanasiImg  from '../../public/somanasi.png';
 import digimagicImg   from '../../public/sonar.png';
