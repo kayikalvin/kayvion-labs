@@ -6,7 +6,7 @@ import matakiriadminImg from '../../public/sonar.png';
 import matakiriImg from '../../public/sonar.png';
 import eleventhImg from '../../public/sonar.png';
 import gymImg from '../../public/sonar.png';
-import somanasiImg  from '../../public/sonar.png';
+import somanasiImg  from '../../public/somanasi.png';
 import digimagicImg   from '../../public/sonar.png';
 
 
