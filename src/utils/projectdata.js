@@ -77,7 +77,7 @@ export const RAW_PROJECTS = [
       "Vercel",
     ],
     code: "https://github.com/kayikalvin/siprosa-foundation",
-    url: "https://siprosa.org/",
+    url: "https://www.siprosa-edu.org/",
     features: [
       "Mission & values communication",
       "Futures Green Schools model showcase",
