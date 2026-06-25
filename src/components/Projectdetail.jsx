@@ -752,7 +752,7 @@ function DetailHero({ project }) {
             backgroundImage: `url(${project.image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            opacity: 0.7,
+            opacity: 0.65,
             filter: "blur(8px)",
             scale: imageScale,
           }}
