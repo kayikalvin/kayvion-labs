@@ -20,6 +20,30 @@ import SEO from "./SEO";
 import { organizationSchema, projectSchema, breadcrumbSchema } from "./schema";
 import { RAW_PROJECTS } from "../utils/projectdata";
 import {MagneticBtn} from './MagneticBtn'
+import xgeneImg from '../assets/xgene.png';
+import siprosaImg from '../assets/siprosa.png';
+import sonarImg from '../assets/sonar.png';
+import dantraImg from '../assets/dantra.png';
+import matakiriadminImg from '../assets/madmin.png';
+import matakiriImg from '../assets/matakiriclient.png';
+import eleventhImg from '../assets/eleventh.png';
+import gymImg from '../assets/gym.png';
+import somanasiImg  from '../assets/somanasi.png';
+import digimagicImg   from '../assets/sonar.png';
+
+// ── Project image lookup ──
+const PROJECT_IMAGES = {
+  "xgene-labs-molecular-diagnostics-website": xgeneImg,
+  "siprosa-foundation-educational-non-profit-website": siprosaImg,
+  "somanasi-tech-training-solutions-company": somanasiImg,
+  "digimagictech-computer-programming-educator": digimagicImg,
+  "gym-sable-one-fitness-landing-page": gymImg,
+  "the-eleventh-hour-coffee-shop-demo-site-uk": eleventhImg,
+  "matakiri-client-portal-community-organisation-website": matakiriImg,
+  "matakiri-admin-dashboard-content-management-system": matakiriadminImg,
+  "dantra-limited-fmcg-distributor-website": dantraImg,
+  "sonar-rock-vs-mine-ui": sonarImg,
+};
 
 /* ─── TOKENS ──────────────────────────────────────────────────────────────── */
 const T = {

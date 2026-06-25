@@ -148,7 +148,7 @@ export const PROJECTS = RAW_PROJECTS.map((p, i) => {
   const headline = `${p.features.length} key features delivered.`;
   const tags = [p.type]; // use the 'type' field as the single tag
 
-  const id = slugify(p.title);
+
 
   return {
     id: slugify(p.title),
@@ -159,7 +159,7 @@ export const PROJECTS = RAW_PROJECTS.map((p, i) => {
     year: "2025",
     services: p.tech,
     headline,
-    image: PROJECT_IMAGES[id] || null, 
+    image: PROJECT_IMAGES[slugify(p.title)] || null,
     summary: p.description,
     metric: {
       value: p.features.length.toString(),
