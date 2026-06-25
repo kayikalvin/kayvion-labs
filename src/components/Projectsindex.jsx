@@ -128,10 +128,27 @@ const slugify = (text) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 
+
+// ── Project image lookup ──
+const PROJECT_IMAGES = {
+  "xgene-labs-molecular-diagnostics-website": xgeneImg,
+  "siprosa-foundation-educational-non-profit-website": siprosaImg,
+  "somanasi-tech-training-solutions-company": somanasiImg,
+  "digimagictech-computer-programming-educator": digimagicImg,
+  "gym-sable-one-fitness-landing-page": gymImg,
+  "the-eleventh-hour-coffee-shop-demo-site-uk": eleventhImg,
+  "matakiri-client-portal-community-organisation-website": matakiriImg,
+  "matakiri-admin-dashboard-content-management-system": matakiriadminImg,
+  "dantra-limited-fmcg-distributor-website": dantraImg,
+  "sonar-rock-vs-mine-ui": sonarImg,
+};
+
 export const PROJECTS = RAW_PROJECTS.map((p, i) => {
   const client = p.title.split(" - ")[0] || p.title;
   const headline = `${p.features.length} key features delivered.`;
   const tags = [p.type]; // use the 'type' field as the single tag
+
+  const id = slugify(p.title);
 
   return {
     id: slugify(p.title),
@@ -142,7 +159,7 @@ export const PROJECTS = RAW_PROJECTS.map((p, i) => {
     year: "2025",
     services: p.tech,
     headline,
-    image: p.image || '',
+    image: PROJECT_IMAGES[id] || null, 
     summary: p.description,
     metric: {
       value: p.features.length.toString(),
