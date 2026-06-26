@@ -762,14 +762,15 @@ function Footer() {
             </svg>
             info@kayvionlabs.com
           </a>
-          <div style={{ display: "flex", gap: 8 }}>
+          
+          {/* <div style={{ display: "flex", gap: 8 }}>
             {[
               {
                 name: "LinkedIn",
                 url: "https://linkedin.com/company/kayvionlabs",
               },
               { name: "X", url: "https://x.com/kayvionlabs" },
-              { name: "GitHub", url: "https://github.com/kayvionlabs" },
+              { name: "GitHub", url: "https://github.com/kayikalvin" },
               { name: "Instagram", url: "https://instagram.com/kayvionlabs" },
             ].map(({ name, url }) => (
               <a
@@ -803,7 +804,9 @@ function Footer() {
                 <SocialIcon title={name} />
               </a>
             ))}
-          </div>
+          </div> */}
+
+
         </div>
 
         {/* Services col */}
