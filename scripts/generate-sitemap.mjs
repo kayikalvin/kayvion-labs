@@ -4,7 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const SITE_URL = 'https://kayvionlabs.com'; // update with your domain
+const SITE_URL = 'https://www.kayvionlabs.com';
 
 // Replicate the slugify function (or you could export it from a shared utility)
 const slugify = (text) =>
