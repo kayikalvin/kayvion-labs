@@ -2,67 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://kayvionlabs.com/</loc>
+    <loc>https://www.kayvionlabs.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://kayvionlabs.com/projects</loc>
+    <loc>https://www.kayvionlabs.com/projects</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://kayvionlabs.com/projects/kenyan-real-estate-website</loc>
+    <loc>https://www.kayvionlabs.com/projects/xgene-labs-molecular-diagnostics-website</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kayvionlabs.com/projects/xgene-labs-molecular-diagnostics-website</loc>
+    <loc>https://www.kayvionlabs.com/projects/siprosa-foundation-educational-non-profit-website</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kayvionlabs.com/projects/siprosa-foundation-educational-non-profit-website</loc>
+    <loc>https://www.kayvionlabs.com/projects/somanasi-tech-training-solutions-company</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kayvionlabs.com/projects/somanasi-tech-training-solutions-company</loc>
+    <loc>https://www.kayvionlabs.com/projects/digimagictech-computer-programming-educator</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kayvionlabs.com/projects/digimagictech-computer-programming-educator</loc>
+    <loc>https://www.kayvionlabs.com/projects/gym-sable-one-fitness-landing-page</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kayvionlabs.com/projects/gym-sable-one-fitness-landing-page</loc>
+    <loc>https://www.kayvionlabs.com/projects/the-eleventh-hour-coffee-shop-demo-site-uk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kayvionlabs.com/projects/the-eleventh-hour-coffee-shop-demo-site-uk</loc>
+    <loc>https://www.kayvionlabs.com/projects/matakiri-client-portal-community-organisation-website</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kayvionlabs.com/projects/matakiri-client-portal-community-organisation-website</loc>
+    <loc>https://www.kayvionlabs.com/projects/matakiri-admin-dashboard-content-management-system</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kayvionlabs.com/projects/matakiri-admin-dashboard-content-management-system</loc>
+    <loc>https://www.kayvionlabs.com/projects/dantra-limited-fmcg-distributor-website</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kayvionlabs.com/projects/dantra-limited-fmcg-distributor-website</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://kayvionlabs.com/projects/sonar-rock-vs-mine-ui</loc>
+    <loc>https://www.kayvionlabs.com/projects/sonar-rock-vs-mine-ui</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
