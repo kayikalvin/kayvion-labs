@@ -56,7 +56,7 @@ export function MagneticBtn({ children, dark, onClick }) {
       ref={ref}
       data-hover
       onMouseMove={onMove}
-      onMouseLeave={onLeave}
+      // onMouseLeave={onLeave}
       onClick={onClick}
       whileTap={{ scale: 0.95 }}
       style={{

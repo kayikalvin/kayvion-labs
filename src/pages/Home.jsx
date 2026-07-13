@@ -5,22 +5,56 @@ import About from "../components/About.jsx";
 import Pricing from "../components/Pricing";
 import Testimonials from "../components/Testimonials";
 import Contact from "../components/Contact";
-import SEO from "../components/SEO";
-import { organizationSchema, websiteSchema } from "../components/schema";
+import { Helmet } from "react-helmet-async";
 
 export default function Home() {
   return (
     <>
-      <SEO
-        title="Software Engineering, AI & Cloud Services"
-        description="Kayvion Labs is a Nairobi‑based ICT partner delivering software
-              engineering, AI solutions, cloud architecture, and cybersecurity
-              for organisations across Healthcare, FMCG, Real Estate, EdTech,
-              and Non‑Profit. We build technology that drives measurable
-              outcomes — no products, just outcomes built to last."
-        path="/"
-        jsonLd={[organizationSchema(), websiteSchema()]}
-      />
+      <Helmet>
+        <title>Kayvion Labs | Software Engineering, AI & Cloud Solutions</title>
+
+        <meta
+          name="description"
+          content="Kayvion Labs builds enterprise software, AI solutions, cloud infrastructure, APIs and data platforms for businesses across Africa."
+        />
+
+        <meta
+          name="keywords"
+          content="software engineering, AI, machine learning, web development, cloud architecture, Kenya, Nairobi"
+        />
+
+        <link rel="canonical" href="https://www.kayvionlabs.com/" />
+
+        <meta property="og:title" content="Kayvion Labs" />
+
+        <meta
+          property="og:description"
+          content="Software Engineering • Artificial Intelligence • Cloud Solutions"
+        />
+
+        <meta
+          property="og:image"
+          content="https://www.kayvionlabs.com/og-image.png"
+        />
+
+        <meta property="og:url" content="https://www.kayvionlabs.com/" />
+
+        <meta property="og:type" content="website" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Kayvion Labs",
+            url: "https://www.kayvionlabs.com",
+            logo: "https://www.kayvionlabs.com/k.png",
+            sameAs: ["https://www.linkedin.com/company/kayvion-labs"],
+          })}
+        </script>
+      </Helmet>
+
       <Hero />
       <Services />
       <About />

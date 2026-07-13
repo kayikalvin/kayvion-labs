@@ -110,6 +110,8 @@ function LogoDark({ height = 68, maxWidth = 320 }) {
     <img
       src={logoDark}
       alt="Kayvion Labs Logo"
+      loading="lazy"
+      decoding="async"
       style={{ height, width: "auto", maxWidth, objectFit: "contain" }}
     />
   );
@@ -120,6 +122,8 @@ function LogoLight({ height = 68, maxWidth = 320 }) {
     <img
       src={logoLight}
       alt="Kayvion Labs Logo"
+      loading="lazy"
+      decoding="async"
       style={{ height, width: "auto", maxWidth, objectFit: "contain" }}
     />
   );
@@ -762,7 +766,7 @@ function Footer() {
             </svg>
             info@kayvionlabs.com
           </a>
-          
+
           {/* <div style={{ display: "flex", gap: 8 }}>
             {[
               {
@@ -805,8 +809,6 @@ function Footer() {
               </a>
             ))}
           </div> */}
-
-
         </div>
 
         {/* Services col */}
@@ -1054,6 +1056,18 @@ function Footer() {
 
 /* ─── LAYOUT ──────────────────────────────────────────────────────────────── */
 export default function Layout() {
+  // Signal prerender-ready for prerendering plugin (fires after client mount)
+  useEffect(() => {
+    // small delay to allow per-page Helmet tags to be applied
+    const t = setTimeout(() => {
+      try {
+        window.dispatchEvent(new Event("prerender-ready"));
+      } catch (e) {
+        // ignore in non-browser environments
+      }
+    }, 60);
+    return () => clearTimeout(t);
+  }, []);
   return (
     <div style={{ background: T.bg, color: T.ink, overflowX: "hidden" }}>
       <style>{`

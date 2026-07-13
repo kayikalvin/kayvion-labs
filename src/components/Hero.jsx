@@ -89,12 +89,12 @@ function LogoImage({ size = 20 }) {
     <img
       src={logoDark}
       alt="Kayvion Labs"
+      loading="lazy"
+      decoding="async"
       style={{ height: size, width: "auto", objectFit: "contain" }}
     />
   );
 }
-
-
 
 function useBreakpoint() {
   const [width, setWidth] = useState(() =>

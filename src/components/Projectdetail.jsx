@@ -19,17 +19,17 @@ import {
 import SEO from "./SEO";
 import { organizationSchema, projectSchema, breadcrumbSchema } from "./schema";
 import { RAW_PROJECTS } from "../utils/projectdata";
-import {MagneticBtn} from './MagneticBtn'
-import xgeneImg from '../assets/xgene.png';
-import siprosaImg from '../assets/siprosa.png';
-import sonarImg from '../assets/sonar.png';
-import dantraImg from '../assets/dantra.png';
-import matakiriadminImg from '../assets/madmin.png';
-import matakiriImg from '../assets/matakiriclient.png';
-import eleventhImg from '../assets/eleventh.png';
-import gymImg from '../assets/gym.png';
-import somanasiImg  from '../assets/somanasi.png';
-import digimagicImg   from '../assets/sonar.png';
+import { MagneticBtn } from "./MagneticBtn";
+import xgeneImg from "../assets/xgene.png";
+import siprosaImg from "../assets/siprosa.png";
+import sonarImg from "../assets/sonar.png";
+import dantraImg from "../assets/dantra.png";
+import matakiriadminImg from "../assets/madmin.png";
+import matakiriImg from "../assets/matakiriclient.png";
+import eleventhImg from "../assets/eleventh.png";
+import gymImg from "../assets/gym.png";
+import somanasiImg from "../assets/somanasi.png";
+import digimagicImg from "../assets/sonar.png";
 
 // ── Project image lookup ──
 const PROJECT_IMAGES = {
@@ -717,7 +717,7 @@ function DetailHero({ project }) {
   const { isMobile } = useBreakpoint();
   const { scrollY } = useScroll();
   const bgY = useTransform(scrollY, [0, 500], [0, 80]);
-  
+
   // Parallax scale for the background image
   const imageScale = useTransform(scrollY, [0, 500], [1, 1.2]);
 
@@ -750,7 +750,7 @@ function DetailHero({ project }) {
           pointerEvents: "none",
         }}
       />
-      
+
       {/* Colored glow blob */}
       <div
         style={{
@@ -832,7 +832,8 @@ function DetailHero({ project }) {
                 color: "rgba(255,255,255,0.4)",
               }}
             >
-              {project.index} / {ALL_PROJECTS.length.toString().padStart(2, "0")}
+              {project.index} /{" "}
+              {ALL_PROJECTS.length.toString().padStart(2, "0")}
             </span>
           </motion.div>
         )}
@@ -1532,7 +1533,11 @@ export default function ProjectDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  const project = ALL_PROJECTS.find((p) => p.id === slug) || ALL_PROJECTS[0];
+  const project = ALL_PROJECTS.find((p) => p.id === slug);
+
+  if (!project) {
+    return <div>Project not found: {slug}</div>;
+  }
   const detail =
     PROJECT_DETAILS[project.id] ||
     PROJECT_DETAILS[slugify(RAW_PROJECTS[0].title)];
@@ -1546,13 +1551,13 @@ export default function ProjectDetail() {
     <div style={{ background: T.bg, color: T.ink, overflowX: "hidden" }}>
       <SEO
         title={`${project.name} — Kayvion Labs Case Study`}
-        description={detail.overview}
+        description={project.description}
         path={`/projects/${slug}`}
         jsonLd={[
           organizationSchema(),
           projectSchema({
             name: project.name,
-            summary: detail.overview,
+            summary: project.description,
             sector: project.sector,
             services: project.services,
             id: project.id,
@@ -1564,6 +1569,7 @@ export default function ProjectDetail() {
           ]),
         ]}
       />
+
       <style>{`
         @import url('https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=cabinet-grotesk@400,500,600,700,800&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
