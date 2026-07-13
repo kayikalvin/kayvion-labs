@@ -1,5 +1,5 @@
 {
-  "installCommand": "npm install && yum install -y nss nss-util nspr atk at-spi2-atk cups-libs libdrm libXcomposite libXdamage libXrandr libgbm libasound libxshmfence pango alsa-lib",
+  "installCommand": "npm install && yum install -y nss nss-util nspr atk at-spi2-atk cups-libs libdrm libXcomposite libXdamage libXrandr libgbm libxshmfence pango alsa-lib",
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
