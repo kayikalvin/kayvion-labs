@@ -7,8 +7,7 @@
     "dev": "vite",
     "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "vite build",
-    "postbuild": "node scripts/prerender.mjs",
-    "lint": "eslint .",
+    "postbuild": "if [ \"$SKIP_PRERENDER\" != \"true\" ]; then node scripts/prerender.mjs; fi",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -100,9 +100,14 @@ async function startServer(port = 3456) {
 
 async function prerender() {
   const { server, url } = await startServer(3456);
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
 
+  // 👇 Vercel‑safe launch: no sandbox, no setuid
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
+
+  const page = await browser.newPage();
   page.setDefaultNavigationTimeout(60000);
 
   for (const route of allRoutes) {
