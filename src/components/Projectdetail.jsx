@@ -1533,19 +1533,27 @@ export default function ProjectDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  const project = ALL_PROJECTS.find((p) => p.id === slug);
+  const ALL_PROJECTS = RAW_PROJECTS.map((p, i) => ({
+    id: slugify(p.title),
+    name: p.title,
+    image: PROJECT_IMAGES[slugify(p.title)] || null,
+    color: BG_COLOR,
+    accentColor: ACCENT_COLORS[i % ACCENT_COLORS.length],
+    description: p.description, // ← add this line
+    metric: {
+      value: p.features.length.toString(),
+      label: "Key Features",
+    },
+    client: p.title.split(" - ")[0] || p.title,
+    sector: p.sector || "Technology",
+    year: "2025",
+    services: p.tech,
+    url: p.url,
+  }));
 
-  if (!project) {
-    return <div>Project not found: {slug}</div>;
-  }
-  const detail =
-    PROJECT_DETAILS[project.id] ||
-    PROJECT_DETAILS[slugify(RAW_PROJECTS[0].title)];
 
-  // Scroll to top when project changes
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, [slug]);
+   const project = ALL_PROJECTS.find((p) => p.id === slug);
+  const detail = project ? PROJECT_DETAILS[project.id] : null;
 
   return (
     <div style={{ background: T.bg, color: T.ink, overflowX: "hidden" }}>
