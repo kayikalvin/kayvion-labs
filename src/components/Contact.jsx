@@ -2,7 +2,6 @@ import { useInView, motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { useBreakpoint } from "./useBreakpoint";
 
-
 /* ─── DATA ────────────────────────────────────────────────────────────────── */
 const SERVICES = [
   {
@@ -130,7 +129,7 @@ export default function Contact() {
       setSent(true);
     } catch (err) {
       setError(
-        "Something went wrong sending your message. Please email us directly at info@kayvionlabs.com.",
+        "Something went wrong sending your message. Please email us directly at info@kayvionlabs.com."
       );
     } finally {
       setSending(false);
@@ -293,8 +292,17 @@ export default function Contact() {
                 understand what you're trying to build.
               </p>
               {[
-                { l: "Email", v: "info@kayvionlabs.com" },
-                { l: "Location", v: "Nairobi, Kenya · Remote worldwide" },
+                {
+                  l: "Email",
+                  v: "info@kayvionlabs.com",
+                  href: "mailto:info@kayvionlabs.com",
+                },
+                {
+                  l: "WhatsApp",
+                  v: "+254 720 332 844",
+                  href: "https://wa.me/254720332844",
+                },
+                { l: "Location", v: "Nairobi, Kenya · Remote worldwide", href: null },
               ].map((item, i) => (
                 <div key={i} style={{ marginBottom: 22 }}>
                   <div
@@ -310,16 +318,48 @@ export default function Contact() {
                   >
                     {item.l}
                   </div>
-                  <div
-                    style={{
-                      fontFamily: "'Cabinet Grotesk', sans-serif",
-                      fontSize: 16,
-                      color: T.ink,
-                      fontWeight: 500,
-                    }}
-                  >
-                    {item.v}
-                  </div>
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      target={item.href.startsWith("http") ? "_blank" : undefined}
+                      rel={
+                        item.href.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
+                      style={{
+                        fontFamily: "'Cabinet Grotesk', sans-serif",
+                        fontSize: 16,
+                        color: T.ink,
+                        fontWeight: 500,
+                        textDecoration: "none",
+                        borderBottom: `1px solid ${T.border}`,
+                        transition: "color 0.2s, border-color 0.2s",
+                        cursor: "pointer",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = T.accent;
+                        e.currentTarget.style.borderColor = T.accent;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = T.ink;
+                        e.currentTarget.style.borderColor = T.border;
+                      }}
+                    >
+                      {item.v}
+                    </a>
+                  ) : (
+                    <div
+                      style={{
+                        fontFamily: "'Cabinet Grotesk', sans-serif",
+                        fontSize: 16,
+                        color: T.ink,
+                        fontWeight: 500,
+                      }}
+                    >
+                      {item.v}
+                    </div>
+                  )}
                 </div>
               ))}
             </motion.div>
