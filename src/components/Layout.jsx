@@ -19,6 +19,14 @@ const T = {
   white: "#FFFFFF",
 };
 
+/* ─── WHATSAPP CONFIG ─────────────────────────────────────────────────────── */
+const WHATSAPP_NUMBER = "254720332844"; // matches Contact.jsx
+const WHATSAPP_MESSAGE =
+  "Hi Kayvion Labs, I'd like to talk about a project.";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+  WHATSAPP_MESSAGE,
+)}`;
+
 /* ─── RESPONSIVE HOOK ─────────────────────────────────────────────────────── */
 function useBreakpoint() {
   const [width, setWidth] = useState(() =>
@@ -98,6 +106,131 @@ function Cursor() {
         mixBlendMode: "multiply",
       }}
     />
+  );
+}
+
+/* ─── WHATSAPP ICON ───────────────────────────────────────────────────────── */
+function WhatsAppIcon({ size = 26, color = "#FFFFFF" }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill={color}
+      aria-hidden="true"
+    >
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+      <path d="M12.001 2C6.478 2 2 6.478 2 12c0 1.86.505 3.649 1.457 5.22L2 22l4.938-1.396A9.94 9.94 0 0 0 12.001 22C17.523 22 22 17.522 22 12S17.523 2 12.001 2zm0 18.061a8.03 8.03 0 0 1-4.408-1.309l-.316-.188-3.076.869.83-2.999-.206-.32A8.043 8.043 0 0 1 3.937 12c0-4.448 3.617-8.064 8.064-8.064 4.448 0 8.064 3.616 8.064 8.064 0 4.447-3.616 8.061-8.064 8.061z" />
+    </svg>
+  );
+}
+
+/* ─── FLOATING WHATSAPP BUTTON (site-wide) ───────────────────────────────── */
+function FloatingWhatsAppButton() {
+  const { isMobile } = useBreakpoint();
+  const isTouch = useIsTouch();
+  const [expanded, setExpanded] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+
+  // Gentle attention pulse a couple seconds after load, only once.
+  const [pulse, setPulse] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setPulse(true), 1800);
+    const t2 = setTimeout(() => setPulse(false), 3400);
+    return () => {
+      clearTimeout(t);
+      clearTimeout(t2);
+    };
+  }, []);
+
+  if (dismissed) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay: 0.8, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      style={{
+        position: "fixed",
+        right: isMobile ? 16 : 28,
+        bottom: isMobile ? 16 : 28,
+        zIndex: 400,
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+      }}
+      onMouseEnter={() => !isTouch && setExpanded(true)}
+      onMouseLeave={() => !isTouch && setExpanded(false)}
+    >
+      {/* Text bubble — shows on hover (desktop) or is part of a tap-to-expand affordance */}
+      <AnimatePresence>
+        {expanded && !isMobile && (
+          <motion.div
+            initial={{ opacity: 0, x: 12, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 12, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              background: T.ink,
+              color: T.white,
+              padding: "10px 16px",
+              borderRadius: 100,
+              fontFamily: "'Cabinet Grotesk', sans-serif",
+              fontWeight: 700,
+              fontSize: 14,
+              whiteSpace: "nowrap",
+              boxShadow: "0 6px 20px rgba(0,0,0,0.18)",
+              order: -1,
+            }}
+          >
+            Contact us directly
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-hover
+        aria-label="Contact us on WhatsApp"
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.94 }}
+        style={{
+          position: "relative",
+          width: isMobile ? 54 : 60,
+          height: isMobile ? 54 : 60,
+          borderRadius: "50%",
+          background: "#25D366",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "0 8px 24px rgba(37,211,102,0.4), 0 2px 8px rgba(0,0,0,0.15)",
+          textDecoration: "none",
+          cursor: isTouch ? "pointer" : "none",
+        }}
+      >
+        {/* Pulse ring, fires once shortly after page load to draw the eye */}
+        <AnimatePresence>
+          {pulse && (
+            <motion.span
+              initial={{ scale: 1, opacity: 0.55 }}
+              animate={{ scale: 1.9, opacity: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.4, ease: "easeOut" }}
+              style={{
+                position: "absolute",
+                inset: 0,
+                borderRadius: "50%",
+                background: "#25D366",
+                pointerEvents: "none",
+              }}
+            />
+          )}
+        </AnimatePresence>
+        <WhatsAppIcon size={isMobile ? 26 : 30} />
+      </motion.a>
+    </motion.div>
   );
 }
 
@@ -755,7 +888,7 @@ function Footer() {
               color: "rgba(255,255,255,0.65)",
               fontWeight: 500,
               textDecoration: "none",
-              marginBottom: 28,
+              marginBottom: 12,
             }}
           >
             <svg
@@ -772,6 +905,30 @@ function Footer() {
               <polyline points="22,6 12,13 2,6" />
             </svg>
             info@kayvionlabs.com
+          </a>
+          <br />
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              background: "rgba(37,211,102,0.12)",
+              border: "1px solid rgba(37,211,102,0.28)",
+              borderRadius: 100,
+              padding: "8px 14px",
+              fontFamily: "'Cabinet Grotesk', sans-serif",
+              fontSize: 13,
+              color: "rgba(255,255,255,0.65)",
+              fontWeight: 500,
+              textDecoration: "none",
+              marginBottom: 28,
+            }}
+          >
+            <WhatsAppIcon size={14} color="#25D366" />
+            Message us on WhatsApp
           </a>
 
           {/* <div style={{ display: "flex", gap: 8 }}>
@@ -1112,6 +1269,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <FloatingWhatsAppButton />
     </div>
   );
 }
