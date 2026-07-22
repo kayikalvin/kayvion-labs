@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
 import Layout from "./components/Layout";
+import GetQuote from "./pages/GetQuote";
 
 const Home = lazy(() => import("./pages/Home"));
 const ProjectsIndex = lazy(() => import("./components/Projectsindex"));
@@ -31,6 +32,7 @@ export default function App() {
             <Route index element={<Home />} />
             <Route path="projects" element={<ProjectsIndex />} />
             <Route path="projects/:slug" element={<ProjectDetail />} />
+            <Route path="/get-a-quote" element={<GetQuote />} />
           </Route>
         </Routes>
       </Suspense>

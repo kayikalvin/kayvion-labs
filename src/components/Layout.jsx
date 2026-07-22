@@ -213,6 +213,8 @@ const NAV_LINKS = [
   "Projects",
   "Testimonials",
   "Contact",
+  "Get a quote",
+
 ];
 
 function Navbar() {
@@ -246,6 +248,11 @@ function Navbar() {
     // If it's the projects link, navigate to the projects route
     if (id === "projects") {
       navigate("/projects");
+      window.scrollTo({ top: 0, behavior: "instant" });
+      return;
+    }
+     if (id === "get a quote") {
+      navigate("/get-a-quote");
       window.scrollTo({ top: 0, behavior: "instant" });
       return;
     }
