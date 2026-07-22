@@ -32,10 +32,15 @@ export default async function handler(req, res) {
     },
   });
 
+  // Where notifications land — separate from the Gmail account used to
+  // authenticate/send. Falls back to the sending account itself if
+  // NOTIFY_TO isn't set, so nothing breaks for existing deployments.
+  const notifyTo = process.env.NOTIFY_TO || process.env.GMAIL_USER;
+
   try {
     await transporter.sendMail({
       from: `"Kayvion Labs" <${process.env.GMAIL_USER}>`,
-      to: process.env.GMAIL_USER,
+      to: notifyTo,
       replyTo: email,
       subject: `New inquiry: ${service || "General"} — from ${name}`,
       html: buildEmailHtml({ name, email, service, message }),
