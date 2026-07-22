@@ -37,6 +37,12 @@ export default async function handler(req, res) {
     },
   });
 
+  // Build a wa.me link straight to the LEAD's own WhatsApp number (if they
+  // gave us a phone), pre-filled with a friendly opener referencing their
+  // request — so whoever reads the email can tap through and reply on
+  // WhatsApp immediately instead of typing a fresh message from scratch.
+  const leadWhatsAppUrl = buildLeadWhatsAppUrl({ phone, name, siteType });
+
   try {
     await transporter.sendMail({
       from: `"Kayvion Labs" <${process.env.GMAIL_USER}>`,
@@ -53,6 +59,7 @@ export default async function handler(req, res) {
         pages,
         features,
         timeline,
+        leadWhatsAppUrl,
       }),
       html: buildQuoteHtml({
         name,
@@ -64,6 +71,7 @@ export default async function handler(req, res) {
         pages,
         features,
         timeline,
+        leadWhatsAppUrl,
       }),
     });
 
@@ -84,6 +92,33 @@ function escapeHtml(str) {
     .replace(/'/g, "&#039;");
 }
 
+// Normalizes a phone number into E.164-ish digits-only form for wa.me links.
+// Handles common Kenyan formats: 07xx…, 01xx…, +254…, 254…
+function normalizePhoneForWhatsApp(raw) {
+  if (!raw) return null;
+  let digits = String(raw).replace(/[^\d+]/g, "");
+  digits = digits.replace(/^\+/, "");
+
+  if (digits.startsWith("254")) return digits;
+  if (digits.startsWith("0") && digits.length === 10) {
+    return `254${digits.slice(1)}`;
+  }
+  if (digits.length >= 9 && digits.length <= 12) return digits;
+  return null;
+}
+
+function buildLeadWhatsAppUrl({ phone, name, siteType }) {
+  const normalized = normalizePhoneForWhatsApp(phone);
+  if (!normalized) return null;
+
+  const firstName = (name || "").trim().split(" ")[0] || "there";
+  const message = `Hi ${firstName}, this is Kayvion Labs — thanks for your quote request${
+    siteType ? ` for a ${siteType}` : ""
+  }. Let's talk through what you need.`;
+
+  return `https://wa.me/${normalized}?text=${encodeURIComponent(message)}`;
+}
+
 function buildQuoteText({
   name,
   email,
@@ -94,6 +129,7 @@ function buildQuoteText({
   pages,
   features,
   timeline,
+  leadWhatsAppUrl,
 }) {
   return [
     "New quote request — Kayvion Labs",
@@ -106,6 +142,7 @@ function buildQuoteText({
     pages ? `Pages: ${pages}` : null,
     features ? `Features: ${features}` : null,
     timeline ? `Timeline: ${timeline}` : null,
+    leadWhatsAppUrl ? `Message on WhatsApp: ${leadWhatsAppUrl}` : null,
     "",
     "Description:",
     description,
@@ -124,6 +161,7 @@ function buildQuoteHtml({
   pages,
   features,
   timeline,
+  leadWhatsAppUrl,
 }) {
   const ink = "#1A1A1A";
   const muted = "#8F8C83";
@@ -131,6 +169,7 @@ function buildQuoteHtml({
   const bgAlt = "#F2F1ED";
   const accent = "#2255FF";
   const white = "#FFFFFF";
+  const whatsappGreen = "#25D366";
 
   const row = (label, value, isLast = false) => `
     <tr>
@@ -155,8 +194,24 @@ function buildQuoteHtml({
     siteType ? row("Site type", siteType) : null,
     pages ? row("Pages", pages) : null,
     features ? row("Features", features) : null,
-    timeline ? row("Timeline", timeline, true) : null,
+    timeline ? row("Timeline", timeline, !leadWhatsAppUrl) : null,
   ].filter(Boolean);
+
+  // WhatsApp CTA button — inline-styled table-button pattern (Gmail-safe),
+  // only rendered when we could derive a usable phone number from the lead.
+  const whatsappButton = leadWhatsAppUrl
+    ? `
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 14px;">
+        <tr>
+          <td>
+            <a href="${leadWhatsAppUrl}" style="display: inline-flex; align-items: center; gap: 8px; background-color: ${whatsappGreen}; color: ${white}; text-decoration: none; font-family: Helvetica, Arial, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: -0.1px; padding: 12px 22px; border-radius: 100px;">
+              Message ${escapeHtml((name || "").split(" ")[0] || "them")} on WhatsApp →
+            </a>
+          </td>
+        </tr>
+      </table>
+    `
+    : "";
 
   return `
 <!DOCTYPE html>
@@ -178,6 +233,7 @@ function buildQuoteHtml({
                   <td>
                     <span style="font-family: Helvetica, Arial, sans-serif; font-size: 19px; font-weight: 700; color: ${white}; letter-spacing: -0.3px;">
                       Kayvion<span style="color: ${accent};">Labs</span>
+                    </span>
                   </td>
                   <td align="right">
                     <span style="font-family: Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4);">
@@ -195,11 +251,13 @@ function buildQuoteHtml({
                 Quote request
               </p>
 
-              <h1 style="margin: 0 0 28px 0; font-family: Helvetica, Arial, sans-serif; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: ${ink}; line-height: 1.25;">
+              <h1 style="margin: 0 0 12px 0; font-family: Helvetica, Arial, sans-serif; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: ${ink}; line-height: 1.25;">
                 ${escapeHtml(name)} wants a quote.
               </h1>
 
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 28px;">
+              ${whatsappButton}
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 28px; margin-bottom: 28px;">
                 ${detailsRows.join("")}
               </table>
 
@@ -211,6 +269,17 @@ function buildQuoteHtml({
                   ${escapeHtml(description)}
                 </p>
               </div>
+
+              <!-- Fallback: reply by email, always available regardless of phone -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 24px;">
+                <tr>
+                  <td align="center">
+                    <a href="mailto:${escapeHtml(email)}" style="display: inline-block; background-color: ${ink}; color: ${white}; text-decoration: none; font-family: Helvetica, Arial, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: -0.1px; padding: 12px 26px; border-radius: 100px;">
+                      Reply by email →
+                    </a>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 

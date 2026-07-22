@@ -55,7 +55,7 @@ function useAnimInView(once = true) {
 
 /* ─── DATA ────────────────────────────────────────────────────────────────── */
 const SITE_TYPES = [
-  { value: "landing", label: "Landing page ", from: 25000 },
+  { value: "landing", label: "Landing page ", from: 35000 },
   { value: "business", label: "Business website (multi-page)", from: 65000 },
   { value: "ecommerce", label: "Online store", from: 95000 },
   { value: "webapp", label: "Web app / custom system", from: 150000 },
