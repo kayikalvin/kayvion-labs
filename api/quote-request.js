@@ -62,7 +62,7 @@ export default async function handler(req, res) {
   try {
     const [internalResult, clientResult] = await Promise.allSettled([
       transporter.sendMail({
-        from: `"Kayvion Labs" <${process.env.GMAIL_USER}>`,
+        from: `"Kayvion Labs" <${process.env.NOTIFY_TO || process.env.GMAIL_USER}>`,
         to: notifyTo,
         replyTo: email,
         subject: `New quote request — ${siteType || "General"} — from ${name}`,
